@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1605",
+    "policy_number": "143924",
+    "incident_date": "2026-02-28",
+    "incident_hour_of_the_day": 15,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "3618 Maple Lane",
+    "incident_city": "Hillsdale",
+    "incident_state": "SC",
+    "auto_make": "Toyota",
+    "auto_model": "Highlander",
+    "auto_year": 2008,
+    "number_of_vehicles_involved": 2,
+    "witnesses": 1,
+    "authorities_contacted": "Police",
+    "police_report_available": "YES",
+    "description": "Multi-vehicle Collision (side collision) at 3618 Maple Lane, Hillsdale, around 15:00. Damage assessed by me as minor damage. Police attended."
+  }
+}

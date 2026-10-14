@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1033",
+    "policy_number": "336614",
+    "incident_date": "2026-02-24",
+    "incident_hour_of_the_day": 16,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "6092 5th Ave",
+    "incident_city": "Arlington",
+    "incident_state": "NY",
+    "auto_make": "BMW",
+    "auto_model": "3 Series",
+    "auto_year": 2008,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 3,
+    "authorities_contacted": "Police",
+    "police_report_available": "NO",
+    "description": "Multi-vehicle Collision (front collision) at 6092 5th Ave, Arlington, around 16:00. Damage assessed by me as total loss. Police attended."
+  }
+}

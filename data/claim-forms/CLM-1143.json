@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1143",
+    "policy_number": "139872",
+    "incident_date": "2026-02-27",
+    "incident_hour_of_the_day": 5,
+    "incident_type": "Parked Car",
+    "collision_type": null,
+    "incident_severity": "Minor Damage",
+    "incident_location": "9101 2nd Hwy",
+    "incident_city": "Northbend",
+    "incident_state": "SC",
+    "auto_make": "Chevrolet",
+    "auto_model": "Silverado",
+    "auto_year": 2013,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 1,
+    "authorities_contacted": "None",
+    "police_report_available": "YES",
+    "description": "Parked Car at 9101 2nd Hwy, Northbend, around 05:00. Damage assessed by me as minor damage."
+  }
+}

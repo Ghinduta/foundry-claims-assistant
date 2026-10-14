@@ -1,0 +1,344 @@
+[
+  {
+    "claim_id": "CLM-1007",
+    "severity": "Minor Damage",
+    "source": "Car damages 116.png",
+    "damage_labels": {
+      "Corrosion": 1,
+      "Dent": 2,
+      "Scratch": 4
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1026",
+    "severity": "Major Damage",
+    "source": "Car damages 501.jpg",
+    "damage_labels": {
+      "Broken part": 1,
+      "Dent": 9,
+      "Flaking": 4,
+      "Scratch": 1
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1095",
+    "severity": "Total Loss",
+    "source": "Car damages 173.png",
+    "damage_labels": {
+      "Broken part": 3,
+      "Corrosion": 1,
+      "Dent": 9,
+      "Missing part": 3,
+      "Scratch": 13
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1105",
+    "severity": "Total Loss",
+    "source": "Car damages 250.png",
+    "damage_labels": {
+      "Broken part": 3,
+      "Cracked": 1,
+      "Dent": 1,
+      "Missing part": 3,
+      "Scratch": 1
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1143",
+    "severity": "Minor Damage",
+    "source": "Car damages 398.png",
+    "damage_labels": {
+      "Dent": 2,
+      "Missing part": 4,
+      "Paint chip": 2,
+      "Scratch": 9
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1169",
+    "severity": "Trivial Damage",
+    "source": "Car damages 898.png",
+    "damage_labels": {
+      "Flaking": 1,
+      "Paint chip": 2,
+      "Scratch": 1
+    },
+    "has_claim_form": false
+  },
+  {
+    "claim_id": "CLM-1221",
+    "severity": "Major Damage",
+    "source": "Car damages 295.png",
+    "damage_labels": {
+      "Broken part": 2,
+      "Corrosion": 3,
+      "Dent": 3,
+      "Paint chip": 3,
+      "Scratch": 31
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1224",
+    "severity": "Total Loss",
+    "source": "Car damages 1336.png",
+    "damage_labels": {
+      "Broken part": 2,
+      "Dent": 2,
+      "Missing part": 4,
+      "Scratch": 7
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1251",
+    "severity": "Total Loss",
+    "source": "Car damages 1162.png",
+    "damage_labels": {
+      "Broken part": 5,
+      "Cracked": 1,
+      "Dent": 5,
+      "Flaking": 1,
+      "Missing part": 4,
+      "Paint chip": 2,
+      "Scratch": 5
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1285",
+    "severity": "Major Damage",
+    "source": "Car damages 1273.png",
+    "damage_labels": {
+      "Broken part": 2,
+      "Dent": 2,
+      "Flaking": 1,
+      "Paint chip": 6,
+      "Scratch": 4
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1298",
+    "severity": "Trivial Damage",
+    "source": "Car damages 254.png",
+    "damage_labels": {
+      "Scratch": 21
+    },
+    "has_claim_form": false
+  },
+  {
+    "claim_id": "CLM-1304",
+    "severity": "Trivial Damage",
+    "source": "Car damages 985.png",
+    "damage_labels": {
+      "Paint chip": 61,
+      "Scratch": 1
+    },
+    "has_claim_form": false
+  },
+  {
+    "claim_id": "CLM-1390",
+    "severity": "Major Damage",
+    "source": "Car damages 217.png",
+    "damage_labels": {
+      "Broken part": 1,
+      "Dent": 2,
+      "Missing part": 1
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1433",
+    "severity": "Major Damage",
+    "source": "Car damages 423.png",
+    "damage_labels": {
+      "Broken part": 1,
+      "Cracked": 1,
+      "Dent": 4,
+      "Missing part": 1,
+      "Scratch": 10
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1460",
+    "severity": "Minor Damage",
+    "source": "Car damages 1065.png",
+    "damage_labels": {
+      "Dent": 7,
+      "Scratch": 16
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1512",
+    "severity": "Trivial Damage",
+    "source": "Car damages 107.png",
+    "damage_labels": {
+      "Scratch": 10
+    },
+    "has_claim_form": false
+  },
+  {
+    "claim_id": "CLM-1518",
+    "severity": "Major Damage",
+    "source": "Car damages 309.png",
+    "damage_labels": {
+      "Broken part": 1,
+      "Dent": 3,
+      "Scratch": 12
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1559",
+    "severity": "Total Loss",
+    "source": "Car damages 883.png",
+    "damage_labels": {
+      "Broken part": 4,
+      "Dent": 3,
+      "Missing part": 3
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1575",
+    "severity": "Total Loss",
+    "source": "Car damages 991.png",
+    "damage_labels": {
+      "Broken part": 3,
+      "Corrosion": 2,
+      "Dent": 2,
+      "Missing part": 3,
+      "Paint chip": 14,
+      "Scratch": 14
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1605",
+    "severity": "Minor Damage",
+    "source": "Car damages 433.png",
+    "damage_labels": {
+      "Dent": 2,
+      "Missing part": 1,
+      "Scratch": 2
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1617",
+    "severity": "Major Damage",
+    "source": "Car damages 1149.png",
+    "damage_labels": {
+      "Broken part": 1,
+      "Scratch": 1
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1636",
+    "severity": "Trivial Damage",
+    "source": "Car damages 622.png",
+    "damage_labels": {
+      "Scratch": 5
+    },
+    "has_claim_form": false
+  },
+  {
+    "claim_id": "CLM-1655",
+    "severity": "Minor Damage",
+    "source": "Car damages 411.png",
+    "damage_labels": {
+      "Dent": 1,
+      "Scratch": 6
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1666",
+    "severity": "Total Loss",
+    "source": "Car damages 909.png",
+    "damage_labels": {
+      "Broken part": 5,
+      "Cracked": 1,
+      "Dent": 6,
+      "Missing part": 5,
+      "Scratch": 2
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1693",
+    "severity": "Minor Damage",
+    "source": "Car damages 140.png",
+    "damage_labels": {
+      "Dent": 1,
+      "Paint chip": 1,
+      "Scratch": 1
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1715",
+    "severity": "Major Damage",
+    "source": "Car damages 305.png",
+    "damage_labels": {
+      "Cracked": 1,
+      "Dent": 4,
+      "Scratch": 3
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1782",
+    "severity": "Minor Damage",
+    "source": "Car damages 1186.png",
+    "damage_labels": {
+      "Dent": 6,
+      "Scratch": 7
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1805",
+    "severity": "Trivial Damage",
+    "source": "Car damages 1285.png",
+    "damage_labels": {
+      "Corrosion": 1,
+      "Scratch": 32
+    },
+    "has_claim_form": false
+  },
+  {
+    "claim_id": "CLM-1826",
+    "severity": "Total Loss",
+    "source": "Car damages 268.jpg",
+    "damage_labels": {
+      "Broken part": 4,
+      "Dent": 1,
+      "Missing part": 3,
+      "Scratch": 2
+    },
+    "has_claim_form": true
+  },
+  {
+    "claim_id": "CLM-1914",
+    "severity": "Minor Damage",
+    "source": "Car damages 312.png",
+    "damage_labels": {
+      "Corrosion": 6,
+      "Dent": 5,
+      "Missing part": 1,
+      "Scratch": 3
+    },
+    "has_claim_form": true
+  }
+]

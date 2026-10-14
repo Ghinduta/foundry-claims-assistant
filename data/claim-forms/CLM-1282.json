@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1282",
+    "policy_number": "779075",
+    "incident_date": "2026-01-14",
+    "incident_hour_of_the_day": 3,
+    "incident_type": "Vehicle Theft",
+    "collision_type": null,
+    "incident_severity": "Trivial Damage",
+    "incident_location": "8477 Francis Hwy",
+    "incident_city": "Arlington",
+    "incident_state": "NY",
+    "auto_make": "Chevrolet",
+    "auto_model": "Malibu",
+    "auto_year": 2013,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 1,
+    "authorities_contacted": "Police",
+    "police_report_available": null,
+    "description": "Vehicle Theft at 8477 Francis Hwy, Arlington, around 03:00. Damage assessed by me as trivial damage. Police attended."
+  }
+}

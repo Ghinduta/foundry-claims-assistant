@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1204",
+    "policy_number": "586367",
+    "incident_date": "2026-02-15",
+    "incident_hour_of_the_day": 7,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Rear Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "3486 Flute Ave",
+    "incident_city": "Riverwood",
+    "incident_state": "SC",
+    "auto_make": "Chevrolet",
+    "auto_model": "Tahoe",
+    "auto_year": 2009,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 3,
+    "authorities_contacted": "Fire",
+    "police_report_available": null,
+    "description": "Multi-vehicle Collision (rear collision) at 3486 Flute Ave, Riverwood, around 07:00. Damage assessed by me as major damage. Fire attended."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1826",
+    "policy_number": "569245",
+    "incident_date": "2026-01-10",
+    "incident_hour_of_the_day": 19,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "2820 Britain St",
+    "incident_city": "Riverwood",
+    "incident_state": "SC",
+    "auto_make": "Volkswagen",
+    "auto_model": "Passat",
+    "auto_year": 2002,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 1,
+    "authorities_contacted": "Police",
+    "police_report_available": null,
+    "description": "Single Vehicle Collision (front collision) at 2820 Britain St, Riverwood, around 19:00. Damage assessed by me as total loss. Police attended."
+  }
+}

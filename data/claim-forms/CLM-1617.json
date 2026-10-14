@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1617",
+    "policy_number": "594988",
+    "incident_date": "2026-02-10",
+    "incident_hour_of_the_day": 14,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "5249 4th Ave",
+    "incident_city": "Columbus",
+    "incident_state": "SC",
+    "auto_make": "Nissan",
+    "auto_model": "Maxima",
+    "auto_year": 2007,
+    "number_of_vehicles_involved": 2,
+    "witnesses": 2,
+    "authorities_contacted": "Fire",
+    "police_report_available": null,
+    "description": "Multi-vehicle Collision (side collision) at 5249 4th Ave, Columbus, around 14:00. Damage assessed by me as major damage. Fire attended."
+  }
+}

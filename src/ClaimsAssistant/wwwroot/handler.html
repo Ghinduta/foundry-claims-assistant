@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claims Handler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo">C</div>
+      <div><h1>Claims Handler</h1><p>Callback requests from the assistant</p></div>
+    </div>
+    <div class="who hidden" id="who">
+      <div class="avatar" id="who-initials"></div><span id="who-name"></span>
+      <button class="link" id="sign-out">Sign out</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="empty hidden" id="sign-in">
+      <h2>Claims handler sign-in</h2>
+      <p>The assistant can ask for a callback, but nobody is called until a handler approves it here.</p>
+      <button class="btn primary" id="sign-in-button">Sign in as a test handler</button>
+    </section>
+    <section class="queue hidden" id="queue">
+      <h2>Waiting for approval</h2>
+      <div id="pending"></div>
+      <h2>Decided</h2>
+      <div id="decided"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const initials = name => name.split(" ").map(part => part[0]).join("");
+const time = iso => new Date(iso).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+const escapeHtml = text => text.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+let refresh;
+
+async function api(path, method = "GET") {
+  const response = await fetch(path, { method });
+  if (!response.ok) throw new Error(`${response.status}`);
+  return response.status === 204 ? null : response.json();
+}
+
+function card(request) {
+  const element = document.createElement("div");
+  element.className = "request";
+  element.innerHTML = `
+    <div class="who-line">${escapeHtml(request.customerName)}</div>
+    <div class="reason">${escapeHtml(request.reason)}</div>
+    <div class="meta">Preferred time: ${escapeHtml(request.preferredTime)} · requested ${time(request.requestedAt)}
+      ${request.decidedAt ? ` · decided ${time(request.decidedAt)}` : ""}</div>
+    <div class="actions"></div>`;
+  const actions = element.querySelector(".actions");
+  if (request.status === "Pending") {
+    for (const [decision, label] of [["reject", "Reject"], ["approve", "Approve"]]) {
+      const button = document.createElement("button");
+      button.className = `btn ${decision}`;
+      button.textContent = label;
+      button.onclick = async () => { await api(`/api/handler/callbacks/${request.id}/${decision}`, "POST"); load(); };
+      actions.append(button);
+    }
+  } else {
+    actions.innerHTML = `<span class="badge ${request.status}">${request.status}</span>`;
+  }
+  return element;
+}
+
+function fill(container, requests, empty) {
+  container.innerHTML = requests.length ? "" : `<div class="none">${empty}</div>`;
+  requests.forEach(request => container.append(card(request)));
+}
+
+async function load() {
+  const requests = await api("/api/handler/callbacks");
+  fill($("pending"), requests.filter(r => r.status === "Pending"), "No callbacks waiting. Ask for one in the chat.");
+  fill($("decided"), requests.filter(r => r.status !== "Pending"), "Nothing decided yet.");
+}
+
+function showSignedIn(name) {
+  $("sign-in").classList.add("hidden");
+  $("queue").classList.remove("hidden");
+  $("who").classList.remove("hidden");
+  $("who-name").textContent = name;
+  $("who-initials").textContent = initials(name);
+  load();
+  refresh = setInterval(load, 5000);
+}
+
+function showSignIn() {
+  clearInterval(refresh);
+  $("sign-in").classList.remove("hidden");
+  $("queue").classList.add("hidden");
+  $("who").classList.add("hidden");
+}
+
+$("sign-in-button").onclick = async () => showSignedIn((await api("/api/handler/sign-in", "POST")).name);
+$("sign-out").onclick = async () => { await api("/api/handler/sign-out", "POST"); showSignIn(); };
+api("/api/handler/me").then(me => showSignedIn(me.name)).catch(showSignIn);
+</script>
+</body>
+</html>

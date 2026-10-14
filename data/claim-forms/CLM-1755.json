@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1755",
+    "policy_number": "445195",
+    "incident_date": "2026-02-25",
+    "incident_hour_of_the_day": 21,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "5028 Maple Ridge",
+    "incident_city": "Springfield",
+    "incident_state": "VA",
+    "auto_make": "Nissan",
+    "auto_model": "Maxima",
+    "auto_year": 2012,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 0,
+    "authorities_contacted": "Fire",
+    "police_report_available": null,
+    "description": "Multi-vehicle Collision (side collision) at 5028 Maple Ridge, Springfield, around 21:00. Damage assessed by me as minor damage. Fire attended."
+  }
+}

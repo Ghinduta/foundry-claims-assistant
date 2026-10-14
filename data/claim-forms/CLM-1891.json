@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1891",
+    "policy_number": "454758",
+    "incident_date": "2026-01-13",
+    "incident_hour_of_the_day": 18,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "8805 Cherokee Drive",
+    "incident_city": "Northbend",
+    "incident_state": "NC",
+    "auto_make": "Suburu",
+    "auto_model": "Legacy",
+    "auto_year": 2012,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 0,
+    "authorities_contacted": "Ambulance",
+    "police_report_available": "NO",
+    "description": "Single Vehicle Collision (side collision) at 8805 Cherokee Drive, Northbend, around 18:00. Damage assessed by me as total loss. Ambulance attended."
+  }
+}

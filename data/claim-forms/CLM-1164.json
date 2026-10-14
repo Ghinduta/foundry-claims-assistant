@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1164",
+    "policy_number": "346940",
+    "incident_date": "2026-01-21",
+    "incident_hour_of_the_day": 3,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "9316 Pine Ave",
+    "incident_city": "Arlington",
+    "incident_state": "SC",
+    "auto_make": "Dodge",
+    "auto_model": "Neon",
+    "auto_year": 1997,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 0,
+    "authorities_contacted": "Fire",
+    "police_report_available": "NO",
+    "description": "Single Vehicle Collision (front collision) at 9316 Pine Ave, Arlington, around 03:00. Damage assessed by me as major damage. Fire attended."
+  }
+}

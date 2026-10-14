@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1105",
+    "policy_number": "939905",
+    "incident_date": "2026-02-12",
+    "incident_hour_of_the_day": 15,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "4154 Lincoln Hwy",
+    "incident_city": "Northbend",
+    "incident_state": "SC",
+    "auto_make": "Chevrolet",
+    "auto_model": "Malibu",
+    "auto_year": 2014,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 0,
+    "authorities_contacted": "Police",
+    "police_report_available": null,
+    "description": "Multi-vehicle Collision (side collision) at 4154 Lincoln Hwy, Northbend, around 15:00. Damage assessed by me as total loss. Police attended."
+  }
+}

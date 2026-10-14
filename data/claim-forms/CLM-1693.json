@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1693",
+    "policy_number": "153027",
+    "incident_date": "2026-02-04",
+    "incident_hour_of_the_day": 4,
+    "incident_type": "Parked Car",
+    "collision_type": null,
+    "incident_severity": "Minor Damage",
+    "incident_location": "4447 Francis Hwy",
+    "incident_city": "Northbrook",
+    "incident_state": "WV",
+    "auto_make": "Jeep",
+    "auto_model": "Grand Cherokee",
+    "auto_year": 2005,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 1,
+    "authorities_contacted": "Police",
+    "police_report_available": "NO",
+    "description": "Parked Car at 4447 Francis Hwy, Northbrook, around 04:00. Damage assessed by me as minor damage. Police attended."
+  }
+}

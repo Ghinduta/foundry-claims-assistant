@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1390",
+    "policy_number": "357713",
+    "incident_date": "2026-01-04",
+    "incident_hour_of_the_day": 21,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "7782 Rock St",
+    "incident_city": "Northbrook",
+    "incident_state": "WV",
+    "auto_make": "Suburu",
+    "auto_model": "Legacy",
+    "auto_year": 2009,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 2,
+    "authorities_contacted": "Ambulance",
+    "police_report_available": null,
+    "description": "Single Vehicle Collision (front collision) at 7782 Rock St, Northbrook, around 21:00. Damage assessed by me as major damage. Ambulance attended."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1782",
+    "policy_number": "963285",
+    "incident_date": "2026-01-04",
+    "incident_hour_of_the_day": 12,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "1275 4th Ridge",
+    "incident_city": "Riverwood",
+    "incident_state": "NC",
+    "auto_make": "Dodge",
+    "auto_model": "RAM",
+    "auto_year": 2009,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 3,
+    "authorities_contacted": "Ambulance",
+    "police_report_available": null,
+    "description": "Single Vehicle Collision (front collision) at 1275 4th Ridge, Riverwood, around 12:00. Damage assessed by me as minor damage. Ambulance attended."
+  }
+}

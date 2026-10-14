@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1239",
+    "policy_number": "280709",
+    "incident_date": "2026-02-16",
+    "incident_hour_of_the_day": 19,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "8281 Lincoln Lane",
+    "incident_city": "Springfield",
+    "incident_state": "NY",
+    "auto_make": "Saab",
+    "auto_model": "92x",
+    "auto_year": 2010,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 1,
+    "authorities_contacted": "Other",
+    "police_report_available": null,
+    "description": "Single Vehicle Collision (side collision) at 8281 Lincoln Lane, Springfield, around 19:00. Damage assessed by me as major damage. Other attended."
+  }
+}

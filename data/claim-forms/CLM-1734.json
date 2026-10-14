@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1734",
+    "policy_number": "374545",
+    "incident_date": "2026-02-04",
+    "incident_hour_of_the_day": 3,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Rear Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "5226 Maple St",
+    "incident_city": "Columbus",
+    "incident_state": "WV",
+    "auto_make": "Dodge",
+    "auto_model": "RAM",
+    "auto_year": 1999,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 1,
+    "authorities_contacted": "Fire",
+    "police_report_available": "NO",
+    "description": "Single Vehicle Collision (rear collision) at 5226 Maple St, Columbus, around 03:00. Damage assessed by me as total loss. Fire attended."
+  }
+}

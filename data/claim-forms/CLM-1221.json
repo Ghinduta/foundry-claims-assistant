@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1221",
+    "policy_number": "940942",
+    "incident_date": "2026-02-22",
+    "incident_hour_of_the_day": 18,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "5483 Francis Drive",
+    "incident_city": "Hillsdale",
+    "incident_state": "NY",
+    "auto_make": "Honda",
+    "auto_model": "Civic",
+    "auto_year": 2009,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 2,
+    "authorities_contacted": "Other",
+    "police_report_available": "YES",
+    "description": "Single Vehicle Collision (front collision) at 5483 Francis Drive, Hillsdale, around 18:00. Damage assessed by me as major damage. Other attended."
+  }
+}

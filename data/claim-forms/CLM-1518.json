@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1518",
+    "policy_number": "243226",
+    "incident_date": "2026-02-09",
+    "incident_hour_of_the_day": 21,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "4414 Solo Drive",
+    "incident_city": "Springfield",
+    "incident_state": "SC",
+    "auto_make": "Jeep",
+    "auto_model": "Wrangler",
+    "auto_year": 1999,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 0,
+    "authorities_contacted": "Fire",
+    "police_report_available": "NO",
+    "description": "Multi-vehicle Collision (front collision) at 4414 Solo Drive, Springfield, around 21:00. Damage assessed by me as major damage. Fire attended."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1115",
+    "policy_number": "143626",
+    "incident_date": "2026-02-24",
+    "incident_hour_of_the_day": 9,
+    "incident_type": "Vehicle Theft",
+    "collision_type": null,
+    "incident_severity": "Minor Damage",
+    "incident_location": "4574 Britain Hwy",
+    "incident_city": "Northbrook",
+    "incident_state": "VA",
+    "auto_make": "Ford",
+    "auto_model": "F150",
+    "auto_year": 2001,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 1,
+    "authorities_contacted": "None",
+    "police_report_available": "YES",
+    "description": "Vehicle Theft at 4574 Britain Hwy, Northbrook, around 09:00. Damage assessed by me as minor damage."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1229",
+    "policy_number": "839884",
+    "incident_date": "2026-02-17",
+    "incident_hour_of_the_day": 10,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "5640 Embaracadero Lane",
+    "incident_city": "Hillsdale",
+    "incident_state": "WV",
+    "auto_make": "Saab",
+    "auto_model": "93",
+    "auto_year": 2015,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 3,
+    "authorities_contacted": "Fire",
+    "police_report_available": "NO",
+    "description": "Multi-vehicle Collision (front collision) at 5640 Embaracadero Lane, Hillsdale, around 10:00. Damage assessed by me as total loss. Fire attended."
+  }
+}

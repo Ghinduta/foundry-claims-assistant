@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contoso Claims Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo">C</div>
+      <div><h1>Claims Assistant</h1><p>Contoso Motor Insurance</p></div>
+    </div>
+    <div class="who hidden" id="who">
+      <div class="avatar" id="who-initials"></div><span id="who-name"></span>
+      <a class="link" href="handler.html" target="_blank">Handler view ↗</a>
+      <button class="link" id="sign-out">Switch user</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="empty" id="picker">
+      <h2>Sign in as a test customer</h2>
+      <p>Each one has a claim in a different state. The assistant only ever sees the signed-in customer's claim.</p>
+      <div class="users" id="users"></div>
+    </section>
+    <section class="empty hidden" id="welcome">
+      <h2 id="welcome-title"></h2>
+      <p>Ask about your claim or about your cover.</p>
+      <div class="suggestions" id="suggestions"></div>
+    </section>
+    <div id="messages"></div>
+  </main>
+
+  <div class="callbacks" id="callbacks"></div>
+  <form id="form" class="hidden">
+    <textarea id="input" rows="1" placeholder="Ask a question…"></textarea>
+    <button class="send" id="send" type="submit" aria-label="Send" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+  </form>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const SUGGESTIONS = [
+  "What's the status of my claim?",
+  "Which documents are still missing?",
+  "Do I get a rental car while my car is repaired?",
+  "Can someone call me back tomorrow morning?",
+  "What's the status of claim CLM-1500?",
+];
+const STATUS = { Pending: "Waiting for approval", Approved: "Approved", Rejected: "Rejected" };
+let refresh;
+const ERRORS = {
+  "401": "Your session ended. Please sign in again.",
+  CONTENT_FILTERED: "I can't help with that request. Please rephrase your question.",
+};
+const initials = name => name.split(" ").map(part => part[0]).join("");
+
+async function api(path, body) {
+  const response = await fetch(path, {
+    method: body === undefined ? "GET" : "POST",
+    headers: { "Content-Type": "application/json" },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.error ?? `${response.status}`);
+  }
+  return response.status === 204 ? null : response.json();
+}
+
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
+// Just enough markdown for the agent's answers: paragraphs, bullet and numbered lists, bold.
+function renderMarkdown(text) {
+  const html = [];
+  let list = null;
+  for (const raw of escapeHtml(text).split("\n")) {
+    const line = raw.trim().replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    const item = line.match(/^(?:[-*•]|(\d+)\.)\s+(.*)/);
+    const kind = item ? (item[1] ? "ol" : "ul") : null;
+    if (list && kind !== list) { html.push(`</${list}>`); list = null; }
+    if (item) {
+      if (!list) { html.push(`<${kind}>`); list = kind; }
+      html.push(`<li>${item[2]}</li>`);
+    } else if (line) {
+      html.push(`<p>${line}</p>`);
+    }
+  }
+  if (list) html.push(`</${list}>`);
+  return html.join("");
+}
+
+function addMessage(role, html) {
+  $("welcome").classList.add("hidden");
+  const message = document.createElement("div");
+  message.className = `msg ${role}`;
+  message.innerHTML = (role === "user" ? "" : '<div class="avatar">C</div>') + `<div class="bubble">${html}</div>`;
+  $("messages").append(message);
+  $("main").scrollTop = $("main").scrollHeight;
+  return message;
+}
+
+async function ask(question) {
+  addMessage("user", escapeHtml(question));
+  const typing = addMessage("bot", '<div class="typing"><span></span><span></span><span></span></div>');
+  $("send").disabled = true;
+  try {
+    const reply = await api("/api/chat", { message: question });
+    const sources = reply.sources.length
+      ? `<div class="sources">${reply.sources.map(s => `<span class="source">${escapeHtml(s)}</span>`).join("")}</div>` : "";
+    typing.querySelector(".bubble").innerHTML = renderMarkdown(reply.answer) + sources;
+    loadCallbacks();
+  } catch (error) {
+    typing.classList.add("error");
+    typing.querySelector(".bubble").textContent = ERRORS[error.message] ?? "Something went wrong. Please try again.";
+  }
+  $("send").disabled = !$("input").value.trim();
+  $("main").scrollTop = $("main").scrollHeight;
+}
+
+async function loadCallbacks() {
+  const requests = await api("/api/callbacks").catch(() => []);
+  $("callbacks").innerHTML = requests.map(request => `
+    <div class="callback-strip"><span>📞 Callback: ${escapeHtml(request.reason)}</span>
+      <span class="badge ${request.status}">${STATUS[request.status]}</span></div>`).join("");
+}
+
+function showSignedIn(name) {
+  loadCallbacks();
+  clearInterval(refresh);
+  refresh = setInterval(loadCallbacks, 5000);
+  $("picker").classList.add("hidden");
+  $("messages").innerHTML = "";
+  $("welcome").classList.remove("hidden");
+  $("welcome-title").textContent = `Hi ${name.split(" ")[0]}, how can I help?`;
+  $("who").classList.remove("hidden");
+  $("who-name").textContent = name;
+  $("who-initials").textContent = initials(name);
+  $("form").classList.remove("hidden");
+  $("input").focus();
+}
+
+async function showPicker() {
+  clearInterval(refresh);
+  $("callbacks").innerHTML = "";
+  $("picker").classList.remove("hidden");
+  $("welcome").classList.add("hidden");
+  $("who").classList.add("hidden");
+  $("form").classList.add("hidden");
+  $("messages").innerHTML = "";
+  const users = await api("/api/test-users");
+  $("users").innerHTML = "";
+  for (const user of users) {
+    const card = document.createElement("button");
+    card.className = "user-card";
+    card.innerHTML = `<div class="avatar">${initials(user.name)}</div><div>${escapeHtml(user.name)}<small>Test customer</small></div>`;
+    card.onclick = async () => showSignedIn((await api(`/api/sign-in/${user.id}`, {})).name);
+    $("users").append(card);
+  }
+}
+
+for (const text of SUGGESTIONS) {
+  const chip = document.createElement("button");
+  chip.className = "chip";
+  chip.textContent = text;
+  chip.onclick = () => ask(text);
+  $("suggestions").append(chip);
+}
+
+$("input").addEventListener("input", () => {
+  $("input").style.height = "auto";
+  $("input").style.height = `${$("input").scrollHeight}px`;
+  $("send").disabled = !$("input").value.trim();
+});
+$("input").addEventListener("keydown", event => {
+  if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); $("form").requestSubmit(); }
+});
+$("form").addEventListener("submit", event => {
+  event.preventDefault();
+  const question = $("input").value.trim();
+  if (!question) return;
+  $("input").value = "";
+  $("input").style.height = "auto";
+  ask(question);
+});
+$("sign-out").onclick = async () => { await api("/api/sign-out", {}); showPicker(); };
+
+api("/api/me").then(me => showSignedIn(me.name)).catch(showPicker);
+</script>
+</body>
+</html>

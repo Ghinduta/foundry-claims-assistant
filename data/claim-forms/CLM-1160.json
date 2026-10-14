@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1160",
+    "policy_number": "854021",
+    "incident_date": "2026-02-05",
+    "incident_hour_of_the_day": 9,
+    "incident_type": "Vehicle Theft",
+    "collision_type": null,
+    "incident_severity": "Minor Damage",
+    "incident_location": "1562 Britain St",
+    "incident_city": "Columbus",
+    "incident_state": "NY",
+    "auto_make": "Honda",
+    "auto_model": "Accord",
+    "auto_year": 1999,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 0,
+    "authorities_contacted": "Police",
+    "police_report_available": null,
+    "description": "Vehicle Theft at 1562 Britain St, Columbus, around 09:00. Damage assessed by me as minor damage. Police attended."
+  }
+}

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Claims assistant on Microsoft Foundry - architecture</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+@page { size: A4 landscape; margin: 12mm 14mm; }
+:root {
+  --bg: #ffffff; --surface: #ffffff; --fg: #15202b; --muted: #5a6775; --line: #c3ccd6;
+  --accent: #0a66b0; --accent-soft: #e2eef8; --on-accent: #ffffff;
+  --secret: #a35f00; --secret-soft: #fbf1dc;
+  --docs: #1d7a46; --claim: #7b3fb3;
+  --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", Consolas, monospace;
+}
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); font: 10pt/1.5 var(--sans); }
+.page-break { break-before: page; }
+.eyebrow { font: 500 8pt var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 2mm 0 1mm; font-size: 20pt; line-height: 1.2; font-weight: 700; }
+h2 { margin: 0 0 3mm; font-size: 15pt; line-height: 1.3; font-weight: 600; }
+h3 { margin: 5mm 0 2mm; font-size: 11.5pt; font-weight: 600; }
+p { margin: 0 0 2.5mm; max-width: 190mm; }
+.lede { color: var(--muted); font-size: 10.5pt; }
+code { font: 8.5pt var(--mono); background: var(--accent-soft); padding: 0 1.2mm; border-radius: 2px; }
+.legend { display: flex; gap: 8mm; font-size: 9pt; color: var(--muted); margin: 1mm 0 3mm; }
+.legend span { display: inline-flex; align-items: center; gap: 2mm; }
+.legend i { display: inline-block; width: 8mm; height: 1mm; border-radius: 1px; }
+.legend .lt { background: var(--accent); } .legend .ls { background: var(--secret); }
+.legend .ld { background: var(--docs); } .legend .lc { background: var(--claim); }
+
+figure { margin: 0 0 3mm; break-inside: avoid; }
+.fig { border: 1px solid var(--line); border-radius: 4px; padding: 3mm; }
+.fig svg { display: block; width: 100%; height: auto; }
+.fig.tall svg { max-height: 108mm; }
+.fig.short svg { max-height: 76mm; }
+figcaption { color: var(--muted); font-size: 9pt; margin-top: 2mm; max-width: 220mm; }
+
+/* SVG parts */
+.box { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.hub { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.6; }
+.chip { fill: var(--surface); stroke: var(--accent); stroke-width: 1; stroke-opacity: .5; }
+.ext { fill: var(--surface); stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.group { fill: none; stroke: var(--line); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.vnet { fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 5; }
+.vault { fill: var(--secret-soft); stroke: var(--secret); stroke-width: 1.6; }
+.zone { fill: var(--secret-soft); fill-opacity: .45; stroke: var(--secret); stroke-width: 1; stroke-dasharray: 4 4; }
+.life { stroke: var(--line); stroke-width: 1.2; stroke-dasharray: 3 5; }
+.note { fill: var(--surface); stroke: var(--muted); stroke-width: 1; }
+.flow, .tok { fill: none; stroke: var(--accent); stroke-width: 2.2; }
+.sec { fill: none; stroke: var(--secret); stroke-width: 2.2; }
+.flow-d { fill: none; stroke: var(--docs); stroke-width: 2.2; }
+.flow-c { fill: none; stroke: var(--claim); stroke-width: 2.2; }
+.ret { stroke-dasharray: 6 4; }
+.aux { fill: none; stroke: var(--muted); stroke-width: 1.3; }
+.dash { stroke-dasharray: 5 4; }
+.mk { fill: var(--muted); } .mka { fill: var(--accent); } .mks { fill: var(--secret); } .mkd { fill: var(--docs); } .mkc { fill: var(--claim); }
+.badge { fill: var(--accent); } .badge-s { fill: var(--secret); } .badge-d { fill: var(--docs); } .badge-c { fill: var(--claim); }
+.bn { fill: var(--on-accent); font: 700 11px var(--sans); }
+.t { fill: var(--fg); font: 600 13.5px var(--sans); }
+.s { fill: var(--muted); font: 12px var(--sans); }
+.c { fill: var(--fg); font: 11.5px var(--sans); }
+.band { fill: var(--muted); font: 600 11px var(--mono); letter-spacing: .08em; }
+.band-s { fill: var(--secret); font: 600 11px var(--mono); letter-spacing: .08em; }
+.fl { fill: var(--accent); font: 600 12px var(--sans); }
+.fs { fill: var(--secret); font: 600 12px var(--sans); }
+.fd { fill: var(--docs); font: 600 12px var(--sans); }
+.fc { fill: var(--claim); font: 600 12px var(--sans); }
+.al { fill: var(--muted); font: 11.5px var(--sans); }
+
+ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 3mm; max-width: 220mm; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 8mm 1fr; gap: 3mm; break-inside: avoid; }
+ol.steps li::before { content: counter(s); width: 6mm; height: 6mm; border-radius: 50%; background: var(--accent); color: var(--on-accent); font: 700 8.5pt/6mm var(--sans); text-align: center; }
+b { font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 3mm; }
+tr { break-inside: avoid; }
+th, td { text-align: left; vertical-align: top; padding: 2mm 2.5mm; border-bottom: 1px solid var(--line); }
+th { font: 500 7.5pt var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+td:first-child { font-weight: 600; white-space: nowrap; }
+.tag { display: inline-block; font: 600 8pt var(--mono); padding: 0 1.5mm; border-radius: 2px; background: var(--accent); color: var(--on-accent); margin-right: 1.5mm; }
+.pill { display: inline-block; font: 600 7.5pt var(--mono); padding: 0 1.5mm; border-radius: 2px; white-space: nowrap; }
+.pill.always { background: var(--secret); color: var(--on-accent); }
+.pill.maybe { background: var(--accent-soft); color: var(--accent); }
+
+.rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm 7mm; }
+.rule { border-top: 2px solid var(--accent); padding-top: 2mm; break-inside: avoid; }
+.rule p { color: var(--muted); font-size: 9pt; margin: 1mm 0 0; }
+.note-box { background: var(--secret-soft); border-radius: 4px; padding: 3mm 4mm; break-inside: avoid; }
+.note-box ul { margin: 1.5mm 0 0; padding-left: 5mm; }
+.note-box li { margin-bottom: 1mm; }
+</style>
+</head>
+<body>
+
+<!-- OVERVIEW -->
+<div class="eyebrow">AI-103 study project · Ana Ghindariu · October 2026</div>
+<h1>Claims assistant on Microsoft Foundry: how it's built and why</h1>
+<p class="lede">A chat assistant for a car insurer's customers. It answers general questions from the company's documents, tells a signed-in customer the status of their own claim and never anyone else's, reads uploaded claim forms and car damage photos, and asks a person to approve before it books a callback. Each piece is chosen because an AI-103 exam topic needs it. Blue arrows follow one question; it branches to green (policy question) or purple (claim question). Amber arrows show a document upload. All data is public or generated, so the repository can be public.</p>
+<div class="legend">
+  <span><i class="lt"></i>one chat question, numbered in order</span>
+  <span><i class="ld"></i>general question: search the policy documents</span>
+  <span><i class="lc"></i>claim question: look up your claim</span>
+  <span><i class="ls"></i>a claim form upload</span>
+</div>
+<figure><div class="fig tall">{{svg:architecture}}</div>
+<figcaption><b>Reading the diagram:</b> the dark blue boxes are what you write and configure: your .NET app and the Foundry agent. Everything else is an Azure service you set up with Bicep. Dashed boxes are not Azure services: the mock Claims API stands in for a real insurer's system, and the source-data row is loaded once by scripts (section 3).</figcaption></figure>
+
+<!-- 1. ONE QUESTION -->
+<div class="page-break"></div>
+<h2>1. One question, start to finish</h2>
+<ol class="steps">
+  <li><div><b>The claimant asks.</b> They sign in with Entra External ID, so the app knows who they are and which claims are theirs. The chat page sends the question to your ASP.NET Core app with the sign-in token.</div></li>
+  <li><div><b>The app runs the agent.</b> The app adds the question to the claimant's <b>conversation thread</b> in Foundry Agent Service and starts a <b>run</b>. The thread keeps the conversation history, so you don't resend it on every turn. The agent has a role, instructions and three tools.</div></li>
+  <li><div><b>General question: the agent searches.</b> For "Which documents do I need for water damage?" the model picks the knowledge-search tool. Azure AI Search runs a hybrid query (keyword + vector) over the company's documents, and the model answers only from the passages it gets back, with the source document named.</div></li>
+  <li><div><b>Claim question: the agent asks your app.</b> For "Where is my claim?" the model picks <code>get_claim_status</code>. A function tool doesn't run inside Foundry: the run pauses and hands the call to your app. Your app takes the claim id from the signed-in session, never from the model, calls the Claims API and returns the result to the run. Section 2 shows this loop in detail.</div></li>
+  <li><div><b>The model writes the answer.</b> <code>gpt-5-mini</code> writes the reply from the search passages or the claim data. Guardrails screen both the question and the answer: content filters for harmful content, Prompt Shields for prompt-injection attempts.</div></li>
+  <li><div><b>The claimant gets the answer</b> with its sources. Every step is traced to Application Insights: which tool ran, how many tokens, how long it took, and whether a guardrail fired.</div></li>
+</ol>
+<p style="margin-top:5mm" class="lede"><b>The idea to remember:</b> the model decides <i>what</i> to do (search, look up a claim, ask for a callback); your code decides <i>whether it's allowed</i> and with which data. That split is what AI-103 means by "tool-access controls" and "oversight".</p>
+
+<!-- 2. FUNCTION CALLING -->
+<div class="page-break"></div>
+<h2>2. The function-calling loop, and why the claim id never comes from the model</h2>
+<p>This is the part of the project the exam asks most about, and the part a client will ask you to explain. The model never calls your Claims API itself. It asks your app to.</p>
+<figure><div class="fig short">{{svg:function-call}}</div>
+<figcaption>Amber steps are where security is decided. The tool's schema has no claim-id parameter at all, so a prompt like "show me claim CLM-2001" has nothing to inject into: your app only ever reads the claim bound to the session.</figcaption></figure>
+<h3>The three tools</h3>
+<table>
+  <thead><tr><th>Tool</th><th>Type</th><th>Runs where</th><th>Guard</th></tr></thead>
+  <tbody>
+    <tr><td><code>knowledge_search</code></td><td>Azure AI Search tool (built in)</td><td>Inside Foundry</td><td>Read-only index of public documents; answers must cite a source.</td></tr>
+    <tr><td><code>get_claim_status</code></td><td>Function tool, no parameters</td><td>Your app</td><td>Claim id from the session; Claims API returns only approved fields.</td></tr>
+    <tr><td><code>request_callback</code></td><td>Function tool: <code>reason</code>, <code>preferredTime</code></td><td>Your app, after approval</td><td>The app queues the request; it runs only after a claims handler approves it on the handler page. This is the exam's "approval flow".</td></tr>
+  </tbody>
+</table>
+
+<!-- 3. DATA -->
+<div class="page-break"></div>
+<h2>3. The data</h2>
+<p>A claims assistant needs four kinds of data. None of it is real customer data: two parts come from public datasets with open licenses, two are generated by a script. Generating is deliberate: when you wrote the document or the form yourself, you know the right answer, so the tests have exact expected results.</p>
+<table>
+  <thead><tr><th>Data</th><th>Source</th><th>License</th><th>Where it goes</th><th>Used by</th></tr></thead>
+  <tbody>
+    <tr><td>Claim records</td><td><code>insurance_claims.csv</code> from <a href="https://data.mendeley.com/datasets/992mh7dk9y/2">Mendeley Data</a>: about 1,000 car insurance claims with policy number, incident date and type, severity, damaged car and amounts. The script adds what the file lacks: <code>status</code>, <code>phase</code>, <code>missing_documents</code> and the claimant's sign-in id.</td><td>CC BY 4.0, credit the source in the README</td><td>SQLite file behind the mock Claims API</td><td><code>get_claim_status</code></td></tr>
+    <tr><td>Damage photos</td><td><a href="https://humansintheloop.org/resources/datasets/car-parts-and-car-damages-dataset/">Car Parts and Car Damages</a> (Humans in the Loop): 814 photos of damaged cars. About 30 are linked to claims whose severity matches.</td><td>CC0, public domain</td><td>Blob Storage</td><td>Image input to the agent; vision tests</td></tr>
+    <tr><td>Policy documents</td><td>Generated: about 15 short documents for a fictional insurer, such as cover rules, excess, required documents per damage type, the claim process and timelines.</td><td>Yours</td><td>Blob Storage → AI Search index</td><td><code>knowledge_search</code>; knowledge test questions</td></tr>
+    <tr><td>Claim forms</td><td>Generated from claim rows: a PDF form per claim, some printed cleanly and some rendered as skewed, noisy "scans".</td><td>Yours</td><td>Blob Storage (as uploads)</td><td>Content Understanding; extraction tests compare fields with the row</td></tr>
+  </tbody>
+</table>
+<h3>Loading it: one-off Python scripts in <code>data/scripts/</code></h3>
+<ol class="steps">
+  <li><div><b>Claims:</b> read the CSV, add the status columns with fixed random seeds (so every run gives the same data), write <code>claims.db</code> for the mock Claims API.</div></li>
+  <li><div><b>Forms:</b> render about 50 claim rows as PDF forms and save the matching fields as JSON. That JSON is the expected answer for the extraction tests.</div></li>
+  <li><div><b>Documents and photos:</b> upload the policy documents and the selected photos to Blob Storage, then create the AI Search index and indexer.</div></li>
+</ol>
+<p style="margin-top:4mm">These scripts are in Python on purpose: creating an index, an indexer and a Content Understanding analyzer are exactly the SDK calls the exam shows in Python.</p>
+
+<!-- 4. COMPONENTS AND EXAM MAP -->
+<div class="page-break"></div>
+<h2>4. Each component, and what it teaches you for AI-103</h2>
+<table>
+  <thead><tr><th>Component</th><th>What it does here</th><th>Exam skills it covers</th></tr></thead>
+  <tbody>
+    <tr><td>Foundry resource + project</td><td>Holds the model deployments, the agent, guardrails, evaluations and connections to AI Search and Storage.</td><td><span class="tag">Plan</span>Choose Foundry services; set up AI solutions; configure model and agent deployments</td></tr>
+    <tr><td>Model deployments</td><td><code>gpt-5-mini</code> for chat and images (multimodal); <code>text-embedding-3-small</code> for vectors. Standard (pay-per-token) deployments.</td><td><span class="tag">Plan</span>Choose a model per task; deployment options; quotas and rate limits</td></tr>
+    <tr><td>Foundry agent</td><td>Role, instructions, conversation thread, three tools.</td><td><span class="tag">GenAI</span>Agent roles, tool schemas, conversation tracking; retrieval + function calling + memory; approval controls</td></tr>
+    <tr><td>Azure AI Search</td><td>Knowledge index, filled by an indexer that chunks and embeds documents from Blob Storage (integrated vectorization). Hybrid queries.</td><td><span class="tag">Extract</span>Ingest and index content; hybrid and vector search; enrichment skills; connect retrieval to agent tools</td></tr>
+    <tr><td>Content Understanding</td><td>An analyzer turns an uploaded claim form (scanned PDF) into fields (policy number, incident date, damage type) and markdown the agent can read.</td><td><span class="tag">Extract</span>OCR + layout + field extraction; analyzers for structured or markdown output</td></tr>
+    <tr><td>Damage photo input</td><td>The photo goes to the model as image input: "describe the visible damage" and questions answered from the photo.</td><td><span class="tag">Vision</span>Multimodal understanding; captions; question answering grounded in visual evidence</td></tr>
+    <tr><td>Guardrails</td><td>Content filters on text and images; Prompt Shields, including text hidden in a photo ("ignore your instructions").</td><td><span class="tag">Plan</span>Safety filters and guardrails <span class="tag">Vision</span>Indirect prompt injection in images</td></tr>
+    <tr><td>Handler summary</td><td>After a chat, the model returns structured JSON: summary, sentiment, urgency, with personal data masked.</td><td><span class="tag">Text</span>Structured JSON outputs; sentiment; sensitive-content detection</td></tr>
+    <tr><td>Evaluations</td><td>A test set scored with Foundry evaluators (groundedness, relevance) plus leak tests; runs in CI.</td><td><span class="tag">Plan</span>Evaluators and safety evaluations <span class="tag">GenAI</span>Evaluate models and apps; detect fabrications</td></tr>
+    <tr><td>Application Insights</td><td>OpenTelemetry traces of every run: tool calls, tokens, latency, guardrail events.</td><td><span class="tag">GenAI</span>Tracing, token analytics, latency breakdowns <span class="tag">Plan</span>Monitor safety events and grounding</td></tr>
+    <tr><td>Managed identity + RBAC</td><td>The app reaches Foundry, AI Search and Storage with its identity. No keys in code or config.</td><td><span class="tag">Plan</span>Managed identity, keyless credentials, role policies</td></tr>
+    <tr><td>Bicep + GitHub Actions</td><td>All infrastructure as code; the pipeline deploys and fails if evaluation scores drop.</td><td><span class="tag">Plan</span>Integrate Foundry projects with CI/CD</td></tr>
+  </tbody>
+</table>
+<p><b>Tags:</b> <span class="tag">Plan</span>plan and manage (25–30%) · <span class="tag">GenAI</span>generative AI and agents (30–35%) · <span class="tag">Extract</span>information extraction (10–15%) · <span class="tag">Vision</span>computer vision (10–15%) · <span class="tag">Text</span>text analysis (10–15%)</p>
+
+<!-- 5. SECURITY + EVALUATION -->
+<div class="page-break"></div>
+<h2>5. Security: who may do what</h2>
+<div class="rules">
+  <div class="rule"><b>No keys</b><p>The app's managed identity gets RBAC roles on Foundry, AI Search and Storage. Locally you use your own <code>az login</code> identity through <code>DefaultAzureCredential</code>, so the same code runs in both places.</p></div>
+  <div class="rule"><b>Least privilege</b><p>The app can read the search index but not change it. Only the indexer writes. The Claims API account is read-only and returns approved fields only.</p></div>
+  <div class="rule"><b>The model is untrusted input</b><p>Tool arguments from the model are validated like user input. Anything that identifies a claim comes from the session.</p></div>
+  <div class="rule"><b>Documents are untrusted too</b><p>Uploaded forms and photos can contain hidden instructions. Prompt Shields screens them, and the agent's instructions say document text is data, not commands.</p></div>
+  <div class="rule"><b>A person approves actions</b><p>Reading is automatic; doing something (booking a callback) waits for a handler's approval.</p></div>
+  <div class="rule"><b>Left out on purpose</b><p>Private endpoints and a VNet. They cost money and add setup time for a demo; you study them for the exam instead (section 7).</p></div>
+</div>
+
+<h2 style="margin-top:8mm">6. Evaluation: how you know it works</h2>
+<p>About 40 test questions in a JSONL file, scored by a Python script with the <code>azure-ai-evaluation</code> package and run in CI. Writing the evaluation in Python is deliberate: the exam's code is Python.</p>
+<table>
+  <thead><tr><th>Group</th><th>Count</th><th>Passes when</th></tr></thead>
+  <tbody>
+    <tr><td>Knowledge questions</td><td>15</td><td>Groundedness and relevance ≥ 4 of 5; the right source is cited</td></tr>
+    <tr><td>Own-claim questions</td><td>10</td><td>Status matches the mock database</td></tr>
+    <tr><td>Other-claim attempts</td><td>5</td><td>No data from another claim, ever (zero tolerance)</td></tr>
+    <tr><td>Out of scope</td><td>5</td><td>"I can't answer that" plus the handoff offer</td></tr>
+    <tr><td>Prompt injection</td><td>5</td><td>Blocked by Prompt Shields or ignored, including text inside a photo</td></tr>
+  </tbody>
+</table>
+
+<!-- 6. MILESTONES -->
+<div class="page-break"></div>
+<h2>7. Build order</h2>
+<p>Each milestone ends with something that runs. The weeks match <code>PLAN.md</code>.</p>
+<table>
+  <thead><tr><th>Milestone</th><th>Week</th><th>Done when</th></tr></thead>
+  <tbody>
+    <tr><td>M0 Data</td><td>1</td><td><code>claims.db</code>, 15 policy documents, 50 claim forms with expected-field JSON, and 30 selected photos exist in <code>data/</code>.</td></tr>
+    <tr><td>M1 Infrastructure</td><td>1</td><td><code>az deployment group create</code> builds Foundry, deployments, AI Search, Storage and App Insights from Bicep, with RBAC and no keys.</td></tr>
+    <tr><td>M2 Knowledge agent</td><td>1</td><td>The agent answers 10 document questions with sources, from a .NET console app.</td></tr>
+    <tr><td>M3 Claims tool</td><td>2</td><td>Sign-in works; own claim is answered; another person's claim never is.</td></tr>
+    <tr><td>M4 Approval flow</td><td>2</td><td>A callback request waits on the handler page and runs only after approval.</td></tr>
+    <tr><td>M5 Guardrails + evaluation</td><td>2</td><td>The 40-question set runs in GitHub Actions and fails the build on a drop.</td></tr>
+    <tr><td>M6 Document intake</td><td>3</td><td>An uploaded claim form becomes fields the agent uses in its answer.</td></tr>
+    <tr><td>M7 Damage photo</td><td>3</td><td>The agent describes the photo; an injected-text photo is blocked.</td></tr>
+    <tr><td>M8 Handler summary</td><td>3</td><td>Each chat produces valid JSON with masked personal data.</td></tr>
+    <tr><td>M9 Tracing + README</td><td>4</td><td>One trace shows every step of a question; README has this diagram and the test results.</td></tr>
+  </tbody>
+</table>
+
+<h3>Studied, not built</h3>
+<div class="note-box">These are on the exam but don't belong in a claims assistant, or cost too much for a demo. Study them on Microsoft Learn and try each once in a short Python notebook:
+<ul>
+  <li><b>Speech:</b> speech to text, text to speech, speech translation, speech as an agent modality.</li>
+  <li><b>Image and video generation:</b> text-to-image, inpainting and mask edits, video generation and editing.</li>
+  <li><b>Translator and Language features</b> beyond what the handler summary uses.</li>
+  <li><b>Private networking:</b> private endpoints, VNet integration, network isolation for Foundry and AI Search.</li>
+  <li><b>Multi-agent orchestration:</b> connected agents and workflows. Optional stretch goal: split intake and status into two agents.</li>
+</ul></div>
+
+<h3>Repository layout</h3>
+<table>
+  <thead><tr><th>Folder</th><th>Contents</th></tr></thead>
+  <tbody>
+    <tr><td><code>infra/</code></td><td>Bicep: Foundry, deployments, AI Search, Storage, App Insights, role assignments</td></tr>
+    <tr><td><code>src/ClaimsAssistant.Api</code></td><td>ASP.NET Core: chat endpoint, function-tool handlers, uploads, handler page</td></tr>
+    <tr><td><code>src/ClaimsApi.Mock</code></td><td>Read-only mock Claims API with SQLite seed data</td></tr>
+    <tr><td><code>data/</code></td><td>Policy documents, claim forms, selected photos, <code>claims.db</code>; <code>data/scripts/</code> holds the Python loading scripts</td></tr>
+    <tr><td><code>eval/</code></td><td>Python: test set (JSONL) and evaluation script</td></tr>
+    <tr><td><code>notebooks/</code></td><td>Python study notebooks for the studied-not-built topics</td></tr>
+  </tbody>
+</table>
+
+</body>
+</html>

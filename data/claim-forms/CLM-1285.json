@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1285",
+    "policy_number": "967756",
+    "incident_date": "2026-02-13",
+    "incident_hour_of_the_day": 17,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "2617 Andromedia Drive",
+    "incident_city": "Riverwood",
+    "incident_state": "WV",
+    "auto_make": "Ford",
+    "auto_model": "Escape",
+    "auto_year": 2009,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 3,
+    "authorities_contacted": "Police",
+    "police_report_available": "YES",
+    "description": "Multi-vehicle Collision (side collision) at 2617 Andromedia Drive, Riverwood, around 17:00. Damage assessed by me as major damage. Police attended."
+  }
+}

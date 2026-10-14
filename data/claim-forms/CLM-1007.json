@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1007",
+    "policy_number": "413978",
+    "incident_date": "2026-01-13",
+    "incident_hour_of_the_day": 0,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "5846 Weaver Drive",
+    "incident_city": "Springfield",
+    "incident_state": "NY",
+    "auto_make": "Nissan",
+    "auto_model": "Pathfinder",
+    "auto_year": 2012,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 0,
+    "authorities_contacted": "Police",
+    "police_report_available": null,
+    "description": "Multi-vehicle Collision (front collision) at 5846 Weaver Drive, Springfield, around 00:00. Damage assessed by me as minor damage. Police attended."
+  }
+}

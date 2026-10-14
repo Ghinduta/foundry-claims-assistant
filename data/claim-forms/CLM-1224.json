@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1224",
+    "policy_number": "114839",
+    "incident_date": "2026-01-07",
+    "incident_hour_of_the_day": 17,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "8655 Cherokee Lane",
+    "incident_city": "Columbus",
+    "incident_state": "NY",
+    "auto_make": "Mercedes",
+    "auto_model": "E400",
+    "auto_year": 1995,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 1,
+    "authorities_contacted": "Fire",
+    "police_report_available": "NO",
+    "description": "Multi-vehicle Collision (side collision) at 8655 Cherokee Lane, Columbus, around 17:00. Damage assessed by me as total loss. Fire attended."
+  }
+}

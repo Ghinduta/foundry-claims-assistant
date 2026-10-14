@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1760",
+    "policy_number": "327488",
+    "incident_date": "2026-01-18",
+    "incident_hour_of_the_day": 0,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "1331 Elm Ridge",
+    "incident_city": "Northbrook",
+    "incident_state": "NY",
+    "auto_make": "Nissan",
+    "auto_model": "Maxima",
+    "auto_year": 1997,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 3,
+    "authorities_contacted": "Ambulance",
+    "police_report_available": null,
+    "description": "Single Vehicle Collision (front collision) at 1331 Elm Ridge, Northbrook, around 00:00. Damage assessed by me as minor damage. Ambulance attended."
+  }
+}

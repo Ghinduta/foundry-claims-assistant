@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1719",
+    "policy_number": "831668",
+    "incident_date": "2026-01-15",
+    "incident_hour_of_the_day": 8,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "3127 Flute St",
+    "incident_city": "Northbend",
+    "incident_state": "NY",
+    "auto_make": "Audi",
+    "auto_model": "A3",
+    "auto_year": 2002,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 0,
+    "authorities_contacted": "Other",
+    "police_report_available": "YES",
+    "description": "Single Vehicle Collision (front collision) at 3127 Flute St, Northbend, around 08:00. Damage assessed by me as minor damage. Other attended."
+  }
+}

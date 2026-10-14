@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1559",
+    "policy_number": "998192",
+    "incident_date": "2026-02-22",
+    "incident_hour_of_the_day": 11,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "9603 Texas Lane",
+    "incident_city": "Riverwood",
+    "incident_state": "WV",
+    "auto_make": "Saab",
+    "auto_model": "95",
+    "auto_year": 2006,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 1,
+    "authorities_contacted": "Fire",
+    "police_report_available": null,
+    "description": "Multi-vehicle Collision (side collision) at 9603 Texas Lane, Riverwood, around 11:00. Damage assessed by me as total loss. Fire attended."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1914",
+    "policy_number": "608443",
+    "incident_date": "2026-01-03",
+    "incident_hour_of_the_day": 23,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "6724 Andromedia St",
+    "incident_city": "Springfield",
+    "incident_state": "WV",
+    "auto_make": "Honda",
+    "auto_model": "CRV",
+    "auto_year": 2011,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 1,
+    "authorities_contacted": "Fire",
+    "police_report_available": "NO",
+    "description": "Single Vehicle Collision (side collision) at 6724 Andromedia St, Springfield, around 23:00. Damage assessed by me as minor damage. Fire attended."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1095",
+    "policy_number": "307447",
+    "incident_date": "2026-01-19",
+    "incident_hour_of_the_day": 21,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Rear Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "9737 Solo Hwy",
+    "incident_city": "Northbend",
+    "incident_state": "SC",
+    "auto_make": "Mercedes",
+    "auto_model": "ML350",
+    "auto_year": 2005,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 0,
+    "authorities_contacted": "Ambulance",
+    "police_report_available": "NO",
+    "description": "Multi-vehicle Collision (rear collision) at 9737 Solo Hwy, Northbend, around 21:00. Damage assessed by me as total loss. Ambulance attended."
+  }
+}

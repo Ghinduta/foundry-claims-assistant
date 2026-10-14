@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1829",
+    "policy_number": "866805",
+    "incident_date": "2026-01-24",
+    "incident_hour_of_the_day": 12,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Rear Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "9724 Maple St",
+    "incident_city": "Riverwood",
+    "incident_state": "SC",
+    "auto_make": "Audi",
+    "auto_model": "A5",
+    "auto_year": 1995,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 2,
+    "authorities_contacted": "Fire",
+    "police_report_available": "NO",
+    "description": "Multi-vehicle Collision (rear collision) at 9724 Maple St, Riverwood, around 12:00. Damage assessed by me as major damage. Fire attended."
+  }
+}

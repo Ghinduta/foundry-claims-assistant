@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1981",
+    "policy_number": "908935",
+    "incident_date": "2026-02-15",
+    "incident_hour_of_the_day": 12,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Rear Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "7570 Cherokee Drive",
+    "incident_city": "Northbend",
+    "incident_state": "OH",
+    "auto_make": "Suburu",
+    "auto_model": "Forrestor",
+    "auto_year": 1999,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 2,
+    "authorities_contacted": "Ambulance",
+    "police_report_available": "YES",
+    "description": "Single Vehicle Collision (rear collision) at 7570 Cherokee Drive, Northbend, around 12:00. Damage assessed by me as minor damage. Ambulance attended."
+  }
+}

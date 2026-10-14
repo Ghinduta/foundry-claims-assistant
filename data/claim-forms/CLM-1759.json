@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1759",
+    "policy_number": "910604",
+    "incident_date": "2026-01-13",
+    "incident_hour_of_the_day": 16,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "7819 2nd Ave",
+    "incident_city": "Arlington",
+    "incident_state": "VA",
+    "auto_make": "Saab",
+    "auto_model": "93",
+    "auto_year": 2005,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 2,
+    "authorities_contacted": "Ambulance",
+    "police_report_available": "NO",
+    "description": "Single Vehicle Collision (front collision) at 7819 2nd Ave, Arlington, around 16:00. Damage assessed by me as minor damage. Ambulance attended."
+  }
+}

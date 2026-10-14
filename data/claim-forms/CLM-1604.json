@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1604",
+    "policy_number": "714784",
+    "incident_date": "2026-01-13",
+    "incident_hour_of_the_day": 19,
+    "incident_type": "Vehicle Theft",
+    "collision_type": null,
+    "incident_severity": "Trivial Damage",
+    "incident_location": "7816 MLK Lane",
+    "incident_city": "Columbus",
+    "incident_state": "WV",
+    "auto_make": "Toyota",
+    "auto_model": "Camry",
+    "auto_year": 2000,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 3,
+    "authorities_contacted": "Police",
+    "police_report_available": null,
+    "description": "Vehicle Theft at 7816 MLK Lane, Columbus, around 19:00. Damage assessed by me as trivial damage. Police attended."
+  }
+}

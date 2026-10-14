@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1778",
+    "policy_number": "488724",
+    "incident_date": "2026-02-11",
+    "incident_hour_of_the_day": 20,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Rear Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "4545 4th Ridge",
+    "incident_city": "Springfield",
+    "incident_state": "NC",
+    "auto_make": "Dodge",
+    "auto_model": "Neon",
+    "auto_year": 2003,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 0,
+    "authorities_contacted": "Police",
+    "police_report_available": "YES",
+    "description": "Multi-vehicle Collision (rear collision) at 4545 4th Ridge, Springfield, around 20:00. Damage assessed by me as total loss. Police attended."
+  }
+}

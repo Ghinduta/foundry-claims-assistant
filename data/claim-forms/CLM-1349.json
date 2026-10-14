@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1349",
+    "policy_number": "399524",
+    "incident_date": "2026-02-03",
+    "incident_hour_of_the_day": 21,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "1358 Maple St",
+    "incident_city": "Arlington",
+    "incident_state": "SC",
+    "auto_make": "Audi",
+    "auto_model": "A5",
+    "auto_year": 2009,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 0,
+    "authorities_contacted": "Other",
+    "police_report_available": null,
+    "description": "Multi-vehicle Collision (side collision) at 1358 Maple St, Arlington, around 21:00. Damage assessed by me as total loss. Other attended."
+  }
+}

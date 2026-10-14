@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1575",
+    "policy_number": "783494",
+    "incident_date": "2026-02-04",
+    "incident_hour_of_the_day": 11,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "6515 Oak Lane",
+    "incident_city": "Northbend",
+    "incident_state": "OH",
+    "auto_make": "Chevrolet",
+    "auto_model": "Silverado",
+    "auto_year": 2004,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 0,
+    "authorities_contacted": "Other",
+    "police_report_available": "NO",
+    "description": "Single Vehicle Collision (side collision) at 6515 Oak Lane, Northbend, around 11:00. Damage assessed by me as total loss. Other attended."
+  }
+}

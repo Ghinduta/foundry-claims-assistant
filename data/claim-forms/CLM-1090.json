@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1090",
+    "policy_number": "958857",
+    "incident_date": "2026-01-07",
+    "incident_hour_of_the_day": 12,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "7238 2nd St",
+    "incident_city": "Columbus",
+    "incident_state": "SC",
+    "auto_make": "Accura",
+    "auto_model": "MDX",
+    "auto_year": 2011,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 0,
+    "authorities_contacted": "Other",
+    "police_report_available": null,
+    "description": "Multi-vehicle Collision (side collision) at 7238 2nd St, Columbus, around 12:00. Damage assessed by me as major damage. Other attended."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1026",
+    "policy_number": "699044",
+    "incident_date": "2026-01-09",
+    "incident_hour_of_the_day": 16,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Rear Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "3418 Texas Lane",
+    "incident_city": "Arlington",
+    "incident_state": "OH",
+    "auto_make": "Ford",
+    "auto_model": "Escape",
+    "auto_year": 2006,
+    "number_of_vehicles_involved": 3,
+    "witnesses": 3,
+    "authorities_contacted": "Other",
+    "police_report_available": "YES",
+    "description": "Multi-vehicle Collision (rear collision) at 3418 Texas Lane, Arlington, around 16:00. Damage assessed by me as major damage. Other attended."
+  }
+}

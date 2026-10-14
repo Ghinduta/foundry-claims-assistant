@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1460",
+    "policy_number": "413192",
+    "incident_date": "2026-02-21",
+    "incident_hour_of_the_day": 13,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Side Collision",
+    "incident_severity": "Minor Damage",
+    "incident_location": "3900 Texas St",
+    "incident_city": "Hillsdale",
+    "incident_state": "NY",
+    "auto_make": "Accura",
+    "auto_model": "MDX",
+    "auto_year": 1995,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 3,
+    "authorities_contacted": "Ambulance",
+    "police_report_available": null,
+    "description": "Single Vehicle Collision (side collision) at 3900 Texas St, Hillsdale, around 13:00. Damage assessed by me as minor damage. Ambulance attended."
+  }
+}

@@ -1,0 +1,27 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# .NET
+bin/
+obj/
+.vs/
+*.user
+TestResults/
+
+# Local settings / secrets
+.env
+*.local.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Downloaded source datasets (3.2 GB; sources listed in progress.md)
+data/raw/
+
+# Personal account details
+progress.md

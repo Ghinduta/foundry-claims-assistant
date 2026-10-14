@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1251",
+    "policy_number": "336047",
+    "incident_date": "2026-02-05",
+    "incident_hour_of_the_day": 13,
+    "incident_type": "Multi-vehicle Collision",
+    "collision_type": "Rear Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "4058 Tree Drive",
+    "incident_city": "Springfield",
+    "incident_state": "SC",
+    "auto_make": "Suburu",
+    "auto_model": "Forrestor",
+    "auto_year": 2009,
+    "number_of_vehicles_involved": 2,
+    "witnesses": 1,
+    "authorities_contacted": "Fire",
+    "police_report_available": null,
+    "description": "Multi-vehicle Collision (rear collision) at 4058 Tree Drive, Springfield, around 13:00. Damage assessed by me as total loss. Fire attended."
+  }
+}

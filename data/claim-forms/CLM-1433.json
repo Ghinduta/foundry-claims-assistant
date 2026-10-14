@@ -1,0 +1,23 @@
+{
+  "scan": false,
+  "fields": {
+    "claim_id": "CLM-1433",
+    "policy_number": "439660",
+    "incident_date": "2026-02-25",
+    "incident_hour_of_the_day": 21,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Front Collision",
+    "incident_severity": "Major Damage",
+    "incident_location": "7066 Texas Ave",
+    "incident_city": "Northbend",
+    "incident_state": "NC",
+    "auto_make": "Audi",
+    "auto_model": "A5",
+    "auto_year": 2005,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 0,
+    "authorities_contacted": "Police",
+    "police_report_available": "NO",
+    "description": "Single Vehicle Collision (front collision) at 7066 Texas Ave, Northbend, around 21:00. Damage assessed by me as major damage. Police attended."
+  }
+}

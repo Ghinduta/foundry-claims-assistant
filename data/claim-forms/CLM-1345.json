@@ -1,0 +1,23 @@
+{
+  "scan": true,
+  "fields": {
+    "claim_id": "CLM-1345",
+    "policy_number": "421940",
+    "incident_date": "2026-01-09",
+    "incident_hour_of_the_day": 16,
+    "incident_type": "Single Vehicle Collision",
+    "collision_type": "Rear Collision",
+    "incident_severity": "Total Loss",
+    "incident_location": "5780 4th Ave",
+    "incident_city": "Columbus",
+    "incident_state": "VA",
+    "auto_make": "Jeep",
+    "auto_model": "Grand Cherokee",
+    "auto_year": 2012,
+    "number_of_vehicles_involved": 1,
+    "witnesses": 3,
+    "authorities_contacted": "Police",
+    "police_report_available": "NO",
+    "description": "Single Vehicle Collision (rear collision) at 5780 4th Ave, Columbus, around 16:00. Damage assessed by me as total loss. Police attended."
+  }
+}
