@@ -32,7 +32,7 @@ var roles = {
   searchIndexDataReader: '1407120a-92aa-4202-b7e9-c0e197c71c8f'
   searchIndexDataContributor: '8ebe5a00-799e-43f5-93ac-243d3dce84a7'
   searchServiceContributor: '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
-  reader: 'acdd72a7-3843-4bc2-b9e0-a1a3a3a1b67e'
+  reader: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
 }
 
 // ---------- Foundry: the resource holds deployments and guardrails; the project holds agents and evaluations.
