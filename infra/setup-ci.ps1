@@ -15,12 +15,16 @@ if (-not $appId) {
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
+# GitHub's token subject carries the owner and repo ids (owner@id/repo@id), so a renamed or re-created repo of the
+# same name doesn't match.
+$github = Invoke-RestMethod "https://api.github.com/repos/$Repo"
+$subjectRepo = "$($github.owner.login)@$($github.owner.id)/$($github.name)@$($github.id)"
+
 $existing = az ad app federated-credential list --id $appId --query "[].name" --output tsv
 foreach ($credential in @(
-    @{ name = 'pull-requests'; subject = "repo:${Repo}:pull_request" },
-    @{ name = 'main'; subject = "repo:${Repo}:ref:refs/heads/main" }
+    @{ name = 'pull-requests'; subject = "repo:${subjectRepo}:pull_request" },
+    @{ name = 'main'; subject = "repo:${subjectRepo}:ref:refs/heads/main" }
 )) {
-    if ($existing -contains $credential.name) { continue }
     $file = New-TemporaryFile
     @{
         name      = $credential.name
@@ -28,9 +32,14 @@ foreach ($credential in @(
         subject   = $credential.subject
         audiences = @('api://AzureADTokenExchange')
     } | ConvertTo-Json | Set-Content -Encoding utf8 $file
-    az ad app federated-credential create --id $appId --parameters "@$file" --output none
+    if ($existing -contains $credential.name) {
+        az ad app federated-credential update --id $appId --federated-credential-id $credential.name --parameters "@$file" --output none
+    } else {
+        az ad app federated-credential create --id $appId --parameters "@$file" --output none
+    }
+    $status = $LASTEXITCODE
     Remove-Item $file
-    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    if ($status -ne 0) { exit $status }
 }
 
 Write-Host "Add these as GitHub repository variables (Settings > Secrets and variables > Actions > Variables):"

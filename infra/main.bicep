@@ -17,8 +17,8 @@ param ciPrincipalId string = ''
 @allowed(['GlobalStandard', 'DataZoneStandard'])
 param deploymentType string = 'GlobalStandard'
 
-@description('Thousands of tokens per minute for each model deployment.')
-param chatCapacity int = 50
+@description('Thousands of tokens per minute for each model deployment. Pay-per-token, so a higher limit costs nothing; the evaluation runs the agent and its judge on the chat model at once.')
+param chatCapacity int = 200
 param embeddingCapacity int = 50
 
 var suffix = uniqueString(resourceGroup().id)
