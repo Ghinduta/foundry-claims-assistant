@@ -13,11 +13,14 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $me = az ad signed-in-user show --query id --output tsv
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+# Empty until infra/setup-ci.ps1 has run once; then the GitHub evaluation gets its roles on every deploy.
+$ci = az ad sp list --display-name claims-assistant-ci --query "[0].id" --output tsv
+
 az deployment group create `
     --subscription $Subscription `
     --resource-group $ResourceGroup `
     --template-file "$PSScriptRoot/main.bicep" `
-    --parameters developerPrincipalId=$me searchLocation=$SearchLocation `
+    --parameters developerPrincipalId=$me searchLocation=$SearchLocation ciPrincipalId=$ci `
     --query properties.outputs `
     --output json
 exit $LASTEXITCODE

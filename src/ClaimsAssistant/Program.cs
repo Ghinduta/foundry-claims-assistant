@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 const string CLAIMANT_ID = "claimant_id";
 const string CONVERSATION_ID = "conversation_id";
+const string CONVERSATION_ID_HEADER = "X-Conversation-Id";
 const string CONTENT_FILTERED = "CONTENT_FILTERED";
 const string CALLBACK_NOT_FOUND = "CALLBACK_NOT_FOUND";
 const string CALLBACK_ALREADY_DECIDED = "CALLBACK_ALREADY_DECIDED";
@@ -58,11 +59,14 @@ builder.Services.AddHttpClient<ClaimStatusTool>(client =>
     client.BaseAddress = new Uri(builder.Configuration["ClaimsApi:BaseUrl"]!));
 builder.Services.AddSingleton<CallbackQueue>();
 builder.Services.AddSingleton<RequestCallbackTool>();
+builder.Services.AddSingleton<CallbackStatusTool>();
 builder.Services.AddScoped<AgentChat>();
 
 var testUsers = builder.Configuration.GetSection("TestUsers").Get<TestUser[]>()!;
 var testHandlerName = builder.Configuration["TestHandlerName"]!;
 
+// Off in production: the evaluation script reads the Foundry conversation behind each answer.
+var returnConversationId = builder.Configuration.GetValue<bool>("Evaluation:ReturnConversationId");
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -106,6 +110,10 @@ app.MapPost("/api/chat", async (ChatRequest request, ClaimsPrincipal user, HttpC
     {
         conversationId = await chat.StartConversationAsync(cancellationToken);
         context.Session.SetString(CONVERSATION_ID, conversationId);
+    }
+    if (returnConversationId)
+    {
+        context.Response.Headers[CONVERSATION_ID_HEADER] = conversationId;
     }
     // The customer comes from the sign-in cookie, never from the request or the model.
     var customer = new Customer(user.FindFirstValue(CLAIMANT_ID)!, user.Identity!.Name!);

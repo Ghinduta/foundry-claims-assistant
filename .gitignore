@@ -25,3 +25,6 @@ data/raw/
 
 # Personal account details
 progress.md
+
+# Evaluation output (answers and context from each run)
+data/eval/results.jsonl

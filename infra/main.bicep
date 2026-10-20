@@ -10,6 +10,9 @@ param searchLocation string = location
 @description('Object id of the person running scripts locally (az ad signed-in-user show --query id -o tsv).')
 param developerPrincipalId string
 
+@description('Object id of the GitHub Actions service principal (infra/setup-ci.ps1), or empty for no CI access.')
+param ciPrincipalId string = ''
+
 @description('Global = cheapest, routed anywhere. DataZone = processed inside the EU/US data zone.')
 @allowed(['GlobalStandard', 'DataZoneStandard'])
 param deploymentType string = 'GlobalStandard'
@@ -29,6 +32,7 @@ var roles = {
   searchIndexDataReader: '1407120a-92aa-4202-b7e9-c0e197c71c8f'
   searchIndexDataContributor: '8ebe5a00-799e-43f5-93ac-243d3dce84a7'
   searchServiceContributor: '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
+  reader: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
 }
 
 // ---------- Foundry: the resource holds deployments and guardrails; the project holds agents and evaluations.
@@ -55,6 +59,35 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-06-01' = {
   properties: {}
 }
 
+// Our own guardrails instead of Microsoft.DefaultV2. Prompts stay at Medium so customers can describe accidents and
+// injuries; answers go to Low because they're customer-facing. IndirectAttack only scans documents embedded in the
+// prompt in the documented format. Creating the policy needs the spaced names; Azure then stores them without spaces.
+resource contentFilter 'Microsoft.CognitiveServices/accounts/raiPolicies@2025-06-01' = {
+  parent: foundry
+  name: 'claims-assistant-filter'
+  properties: {
+    basePolicyName: 'Microsoft.DefaultV2'
+    mode: 'Blocking'
+    contentFilters: [
+      for filter in [
+        { name: 'Hate', source: 'Prompt', severityThreshold: 'Medium' }
+        { name: 'Sexual', source: 'Prompt', severityThreshold: 'Medium' }
+        { name: 'Violence', source: 'Prompt', severityThreshold: 'Medium' }
+        { name: 'Selfharm', source: 'Prompt', severityThreshold: 'Medium' }
+        { name: 'Hate', source: 'Completion', severityThreshold: 'Low' }
+        { name: 'Sexual', source: 'Completion', severityThreshold: 'Low' }
+        { name: 'Violence', source: 'Completion', severityThreshold: 'Low' }
+        { name: 'Selfharm', source: 'Completion', severityThreshold: 'Low' }
+        { name: 'Jailbreak', source: 'Prompt' }
+        { name: 'Indirect Attack', source: 'Prompt' }
+        { name: 'Protected Material Text', source: 'Completion' }
+        { name: 'Protected Material Code', source: 'Completion' }
+      ]: union(filter, { enabled: true, blocking: true })
+    ]
+  }
+  dependsOn: [project] // the account accepts one change at a time; parallel children fail with RequestConflict
+}
+
 // gpt-4.1-mini is Deprecated for new subscriptions, and a new trial has 0 quota for gpt-5.4-mini.
 resource chat 'Microsoft.CognitiveServices/accounts/deployments@2025-06-01' = {
   parent: foundry
@@ -62,8 +95,8 @@ resource chat 'Microsoft.CognitiveServices/accounts/deployments@2025-06-01' = {
   sku: { name: deploymentType, capacity: chatCapacity }
   properties: {
     model: { format: 'OpenAI', name: 'gpt-5-mini', version: '2025-08-07' }
+    raiPolicyName: contentFilter.name
   }
-  dependsOn: [project] // the account accepts one change at a time; parallel children fail with RequestConflict
 }
 
 resource embedding 'Microsoft.CognitiveServices/accounts/deployments@2025-06-01' = {
@@ -244,6 +277,27 @@ resource developerManagesSearch 'Microsoft.Authorization/roleAssignments@2022-04
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.searchServiceContributor)
     principalId: developerPrincipalId
     principalType: 'User'
+  }
+}
+
+// GitHub Actions, signed in through OIDC (no secret): runs the agent and the judge model, and reads the deployment
+// outputs for the endpoints. It can't change the agent or the infrastructure.
+resource ciUsesFoundry 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(ciPrincipalId)) {
+  scope: foundry
+  name: guid(foundry.id, ciPrincipalId, roles.foundryUser)
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.foundryUser)
+    principalId: ciPrincipalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+resource ciReadsDeployment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(ciPrincipalId)) {
+  name: guid(resourceGroup().id, ciPrincipalId, roles.reader)
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.reader)
+    principalId: ciPrincipalId
+    principalType: 'ServicePrincipal'
   }
 }
 

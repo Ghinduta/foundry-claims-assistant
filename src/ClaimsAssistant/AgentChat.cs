@@ -13,7 +13,7 @@ public record ChatReply(string Answer, IReadOnlyList<string> Sources);
 
 /// <summary>Talks to the Foundry agent and runs the function tools it asks for.</summary>
 public sealed partial class AgentChat(AIProjectClient project, ClaimStatusTool claimStatus,
-    RequestCallbackTool requestCallback, IConfiguration configuration)
+    RequestCallbackTool requestCallback, CallbackStatusTool callbackStatus, IConfiguration configuration)
 {
     private const int MAX_TOOL_ROUNDS = 5;
 
@@ -52,8 +52,9 @@ public sealed partial class AgentChat(AIProjectClient project, ClaimStatusTool c
             {
                 var output = call.FunctionName switch
                 {
-                    ClaimStatusTool.NAME => await claimStatus.RunAsync(customer.ClaimantId, cancellationToken),
+                    ClaimStatusTool.NAME => await claimStatus.RunAsync(customer, cancellationToken),
                     RequestCallbackTool.NAME => requestCallback.Run(customer, call.FunctionArguments.ToString()),
+                    CallbackStatusTool.NAME => callbackStatus.Run(customer),
                     _ => JsonSerializer.Serialize(new { error = "UNKNOWN_TOOL" }),
                 };
                 input.Add(ResponseItem.CreateFunctionCallOutputItem(call.CallId, output));

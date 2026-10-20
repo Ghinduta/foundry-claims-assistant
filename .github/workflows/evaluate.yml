@@ -1,0 +1,68 @@
+# Quality gate: run the 40-question test set against the live agent and fail the PR when a score drops.
+# Needs the Azure resources up (infra/up.ps1) and the variables from infra/setup-ci.ps1.
+name: Evaluate agent
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write # lets the job ask GitHub for the OIDC token that azure/login exchanges
+  contents: read
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Check the Azure resources are up
+        run: |
+          az deployment group show -g rg-claims-assistant -n main --query properties.outputs.projectEndpoint.value -o tsv > endpoint.txt \
+            || { echo "::error::rg-claims-assistant is down: run infra/up.ps1, then re-run this job"; exit 1; }
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: data/scripts/requirements.txt
+
+      - run: pip install -r data/scripts/requirements.txt
+
+      - name: Start the apps
+        env:
+          Foundry__TenantId: ${{ vars.AZURE_TENANT_ID }}
+        run: |
+          export Foundry__ProjectEndpoint="$(cat endpoint.txt)"
+          dotnet build ClaimsAssistant.slnx -v q
+          nohup dotnet run --no-build --project src/ClaimsApi --launch-profile http > claims-api.log 2>&1 &
+          nohup dotnet run --no-build --project src/ClaimsAssistant --launch-profile http > assistant.log 2>&1 &
+          for i in $(seq 60); do
+            curl -s -o /dev/null http://localhost:5101/ && curl -s -o /dev/null http://localhost:5100/ && exit 0
+            sleep 2
+          done
+          cat claims-api.log assistant.log; exit 1
+
+      - name: Evaluate
+        working-directory: data/scripts
+        run: python evaluate.py
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evaluation
+          path: |
+            data/eval/results.jsonl
+            *.log

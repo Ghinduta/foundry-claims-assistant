@@ -66,5 +66,22 @@ public class CallbackFlowTests : IDisposable
         Assert.Equal(CallbackStatus.Approved, decided.Status);
     }
 
+    [Fact]
+    public async Task The_agent_sees_a_rejection_made_after_the_request()
+    {
+        var maria = await apps.SignInAsync("maria");
+        (await maria.PostAsJsonAsync("/api/chat",
+            new { message = "Please ask someone to call me back tomorrow morning about my missing police report." }))
+            .EnsureSuccessStatusCode();
+        var waiting = Assert.Single((await maria.GetFromJsonAsync<CallbackRequest[]>("/api/callbacks", JSON))!);
+
+        (await maria.PostAsync("/api/handler/sign-in", null)).EnsureSuccessStatusCode();
+        (await maria.PostAsync($"/api/handler/callbacks/{waiting.Id}/reject", null)).EnsureSuccessStatusCode();
+
+        var reply = (await (await maria.PostAsJsonAsync("/api/chat", new { message = "Was my callback approved?" }))
+            .Content.ReadFromJsonAsync<ChatReply>())!;
+        Assert.Contains("reject", reply.Answer, StringComparison.OrdinalIgnoreCase);
+    }
+
     public void Dispose() => apps.Dispose();
 }
