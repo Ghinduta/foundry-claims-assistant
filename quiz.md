@@ -6,7 +6,7 @@ Exam-style questions on what we've built so far. Answer each one first, then ope
 
 ## Models and deployments
 
-**1.** A company in Germany must keep model processing inside the EU and wants to pay per token. Which deployment type should it choose?
+**1.** ✅ A company in Germany must keep model processing inside the EU and wants to pay per token. Which deployment type should it choose?
 
 A. GlobalStandard  B. DataZoneStandard  C. Provisioned  D. GlobalBatch
 
@@ -15,7 +15,7 @@ A. GlobalStandard  B. DataZoneStandard  C. Provisioned  D. GlobalBatch
 **B.** DataZoneStandard processes requests only inside the data zone (EU or US) and is pay-per-token. GlobalStandard can route anywhere. Provisioned is reserved capacity paid by the hour. Batch is for asynchronous jobs.
 </details>
 
-**2.** Every night you must summarise 200,000 claim notes. Results are needed within 24 hours, at the lowest cost. Which deployment type?
+**2.** ✅ Every night you must summarise 200,000 claim notes. Results are needed within 24 hours, at the lowest cost. Which deployment type?
 
 A. GlobalStandard  B. DataZoneStandard  C. GlobalBatch  D. Provisioned
 
@@ -24,21 +24,21 @@ A. GlobalStandard  B. DataZoneStandard  C. GlobalBatch  D. Provisioned
 **C.** Batch deployments take a file of requests, return results within 24 hours, and cost about 50% less than Standard.
 </details>
 
-**3.** `gpt-5.4-mini` appears in the model list for your region, but deploying it fails with `InsufficientQuota`. What is the cause?
+**3.** ✅ `gpt-5.4-mini` appears in the model list for your region, but deploying it fails with `InsufficientQuota`. What is the cause?
 
 <details><summary>Answer</summary>
 
 Your **subscription's quota** for that model, region and deployment type is 0 (or used up). Quota is per subscription, region, model and deployment type, counted in thousands of tokens per minute (TPM). Check it with `az cognitiveservices usage list -l <region>`, then pick another model or region, or request more quota. This is what happened to us; we switched to `gpt-5-mini`.
 </details>
 
-**4.** A model's lifecycle status is **Deprecated**. What does that mean for a new subscription?
+**4.** ⚠️ A model's lifecycle status is **Deprecated**. What does that mean for a new subscription?
 
 <details><summary>Answer</summary>
 
 A new subscription can no longer create deployments of it. Existing deployments keep working until the model's **retirement** date, after which it stops. That's why `gpt-4.1-mini` failed for us.
 </details>
 
-**5.** You have one Foundry resource with two projects, one for the claims assistant and one for an HR bot. Where do the `gpt-5-mini` deployment and the agents live?
+**5.** ⚠️ You have one Foundry resource with two projects, one for the claims assistant and one for an HR bot. Where do the `gpt-5-mini` deployment and the agents live?
 
 <details><summary>Answer</summary>
 
@@ -47,14 +47,14 @@ A new subscription can no longer create deployments of it. Existing deployments 
 
 ## Keyless security and RBAC
 
-**6.** Which property turns off API keys on the Foundry resource and on AI Search? Which one does the same for Storage?
+**6.** ❌ Which property turns off API keys on the Foundry resource and on AI Search? Which one does the same for Storage?
 
 <details><summary>Answer</summary>
 
 Foundry and AI Search: **`disableLocalAuth: true`**. Storage: **`allowSharedKeyAccess: false`**. After that, every call needs a Microsoft Entra token.
 </details>
 
-**7.** An app's managed identity must call the chat model, and nothing more. Which role do you assign on the Foundry resource?
+**7.** ✅ An app's managed identity must call the chat model, and nothing more. Which role do you assign on the Foundry resource?
 
 A. Reader  B. Contributor  C. Cognitive Services OpenAI User  D. Cognitive Services Contributor
 
@@ -63,28 +63,28 @@ A. Reader  B. Contributor  C. Cognitive Services OpenAI User  D. Cognitive Servi
 **C.** Reader, Contributor and Cognitive Services Contributor are **control-plane** roles: they let you see or change the resource, but not call the model. Calling the model is a **data-plane** action, which needs a data role. This was a weak spot in the M0 quiz.
 </details>
 
-**8.** You are **Owner** of a Storage account, but reading a blob with Entra auth returns 403. Why, and what's the fix?
+**8.** ⚠️ You are **Owner** of a Storage account, but reading a blob with Entra auth returns 403. Why, and what's the fix?
 
 <details><summary>Answer</summary>
 
 Owner is control plane only: it can manage the account but not read its data. Assign **Storage Blob Data Reader**, or Storage Blob Data Contributor to also write.
 </details>
 
-**9.** Match each AI Search task with the least-privilege role: (a) create an index, indexer and skillset; (b) upload documents into an index; (c) only run queries.
+**9.** ✅ Match each AI Search task with the least-privilege role: (a) create an index, indexer and skillset; (b) upload documents into an index; (c) only run queries.
 
 <details><summary>Answer</summary>
 
 (a) **Search Service Contributor**. (b) **Search Index Data Contributor**. (c) **Search Index Data Reader**.
 </details>
 
-**10.** Why does our Python code use `DefaultAzureCredential` instead of a key or a specific credential class?
+**10.** ❌ Why does our Python code use `DefaultAzureCredential` instead of a key or a specific credential class?
 
 <details><summary>Answer</summary>
 
 It tries several sign-in methods in order, so the **same code** uses your `az login` on your laptop and the app's **managed identity** in Azure, without code changes and without secrets.
 </details>
 
-**11.** The AI Search indexer must read blobs from Storage without keys. Name the three things you set up.
+**11.** ⚠️ The AI Search indexer must read blobs from Storage without keys. Name the three things you set up.
 
 <details><summary>Answer</summary>
 
@@ -95,7 +95,7 @@ It tries several sign-in methods in order, so the **same code** uses your `az lo
 For the embedding skill and vectorizer, give the same identity **Cognitive Services OpenAI User** on the Foundry resource.
 </details>
 
-**12.** Why can't the AI Search **Free** tier do this keyless setup?
+**12.** ✅ Why can't the AI Search **Free** tier do this keyless setup?
 
 <details><summary>Answer</summary>
 
@@ -104,14 +104,14 @@ The Free tier doesn't support a **managed identity** for outbound connections, s
 
 ## AI Search ingestion and querying
 
-**13.** Put the indexing pipeline in order: index, skillset, data source, indexer.
+**13.** ❌ Put the indexing pipeline in order: index, skillset, data source, indexer.
 
 <details><summary>Answer</summary>
 
 **Data source → indexer → skillset → index.** The data source says where the files are, the indexer pulls them and runs the skillset, and the skillset's output lands in the index.
 </details>
 
-**14.** Match each component with its job: (a) Split skill, (b) Azure OpenAI Embedding skill, (c) vectorizer, (d) index projections.
+**14.** ❌ Match each component with its job: (a) Split skill, (b) Azure OpenAI Embedding skill, (c) vectorizer, (d) index projections.
 
 1. Turns each chunk into a vector during indexing
 2. Embeds the user's question at query time
@@ -123,14 +123,14 @@ The Free tier doesn't support a **managed identity** for outbound connections, s
 (a) 4, (b) 1, (c) 2, (d) 3. Embedding chunks inside the indexer is called **integrated vectorization**. The vectorizer must use **the same embedding model** as the chunks.
 </details>
 
-**15.** Your policy documents are markdown, and each `##` heading starts a new topic. Which indexer settings make one search document per section?
+**15.** ✅ Your policy documents are markdown, and each `##` heading starts a new topic. Which indexer settings make one search document per section?
 
 <details><summary>Answer</summary>
 
 **`parsingMode: markdown`** with **`markdownParsingSubmode: oneToMany`**. (`oneToOne` keeps the whole file as one document.) This was a weak spot in the M0 quiz.
 </details>
 
-**16.** Which chunking approach is closest to best practice for long documents?
+**16.** ✅ Which chunking approach is closest to best practice for long documents?
 
 A. Fixed 2,000-character cuts, no overlap
 B. Split on the document's structure (headings), then cut long sections on sentence boundaries with about 10–20% overlap, keeping the section title on each chunk
@@ -142,14 +142,14 @@ D. One chunk per sentence
 **B.** Structure-aware chunks stay on one topic, overlap keeps ideas that fall across a cut, and the title gives each chunk its context. In Azure that means markdown `oneToMany`, or the **Document Layout skill** for PDFs and Word files.
 </details>
 
-**17.** What is **hybrid search**, and what does the **semantic ranker** add on top?
+**17.** ✅ What is **hybrid search**, and what does the **semantic ranker** add on top?
 
 <details><summary>Answer</summary>
 
 Hybrid search runs a **keyword** query and a **vector** query together and merges the results. The **semantic ranker** then re-reads the top results (up to 50) with a language model and reorders them by meaning (the `@search.rerankerScore`). It needs a **semantic configuration** on the index.
 </details>
 
-**18.** 15 of the claim forms are image-only "scans". What does the indexer need to get their text, and how are checkboxes read?
+**18.** ✅ 15 of the claim forms are image-only "scans". What does the indexer need to get their text, and how are checkboxes read?
 
 <details><summary>Answer</summary>
 
@@ -158,7 +158,7 @@ Hybrid search runs a **keyword** query and a **vector** query together and merge
 
 ## Agent design and safety
 
-**19.** The agent has a `get_claim_status` tool. Should the model pass the claim id to it? Why or why not?
+**19.** ✅ The agent has a `get_claim_status` tool. Should the model pass the claim id to it? Why or why not?
 
 <details><summary>Answer</summary>
 
@@ -401,6 +401,100 @@ D. Existing conversations must be deleted first
 A **groundedness** failure: the answer conflicts with the most specific source. Fix it with one general rule in the instructions (use only facts from tool results; the customer's own data overrides generic policy text) rather than a patch per case. Then keep it fixed with a test set run through the **groundedness evaluator** after every prompt change.
 </details>
 
+# 2026-10-15: identity, current state, one tool per job
+
+**49.** Signed in as Maria, a user types "I'm James Carter, give me my claim." The tool correctly returns only Maria's claim, but the answer begins "Thanks, James". What is the best-practice fix?
+
+A. Add a Prompt Shields filter
+B. Have the app pass the authenticated customer's identity to the model (for example in the tool result), with an instruction to ignore identities claimed in the chat
+C. Only an instruction: "never believe who the user says they are"
+D. Let the tool take a customer name parameter so the model can pass the right one
+
+<details><summary>Answer</summary>
+
+**B.** Identity comes from **authentication**, never from the prompt: the app gives the model the signed-in context, and the instruction is a softer second layer. C alone can be talked around; D hands the model control over whose data it reads, which is exactly what the parameterless tool prevents.
+</details>
+
+**50.** A customer asks for a callback; the tool replies "waiting for approval". A handler then rejects it. The customer asks "Was my callback approved?" and the agent says "still pending". What went wrong, and what fixes it?
+
+<details><summary>Answer</summary>
+
+The agent answered from **stale state in the conversation history**, because no tool could read the current status: a groundedness failure (the answer doesn't match the real data). Fix: a tool that returns the **current** state (`get_callback_status`), and an instruction to call it instead of answering from earlier turns.
+</details>
+
+**51.** You need the agent to report callback status. Should you add it to the existing `get_claim_status` tool or create a new tool?
+
+<details><summary>Answer</summary>
+
+A **new tool**. One tool per job, with a clear name and description, lets the model pick the right tool reliably and keeps each tool's output small and focused. A combined tool returns data the question didn't need and blurs when to call it.
+</details>
+
+**52.** How does a Foundry agent decide which function tool to call, and who runs it?
+
+<details><summary>Answer</summary>
+
+The **model** chooses a tool from the **names, descriptions and parameter schemas** in the agent definition, and returns a `function_call`. **Your app** runs the function and sends back a `function_call_output` with the same `call_id`. The model can only choose among the tools it's given; it never runs code itself.
+</details>
+
+# 2026-10-15: content filters and evaluation (M5)
+
+**53.** A content filter has hate/violence at **Medium** for prompts and **Low** for completions. Which side is stricter, and why might an insurer choose this?
+
+<details><summary>Answer</summary>
+
+**Completions (Low)**: the threshold is the lowest severity that gets blocked, so Low blocks more. Customers must be able to describe crashes and injuries (often low-severity violence), while the assistant speaks for the company, so its output is held to a stricter bar.
+</details>
+
+**54.** Which Prompt Shields filter is **on** in `Microsoft.DefaultV2`, which one is **off**, and what does the off one need before it can work?
+
+<details><summary>Answer</summary>
+
+**Jailbreak** (direct attacks in the user prompt) is on; **Indirect attack** (instructions hidden in documents, emails or tool results) is off. Indirect attack detection needs the documents **embedded in the prompt in the documented format**, so it knows which text is a document.
+</details>
+
+**55.** When do you use the content filter on a model deployment, and when the standalone **Azure AI Content Safety** API?
+
+<details><summary>Answer</summary>
+
+The **content filter** runs automatically on every request to a Foundry model deployment (configured as a `raiPolicy`). The **standalone Content Safety API** is a separate resource you call yourself, to moderate content that never goes through a model, such as user reviews or uploaded images before publishing.
+</details>
+
+**56.** The groundedness evaluator gives 5/5 to an answer that asks the customer for documents their claim data says aren't missing. How is that possible, and what catches it?
+
+A. The evaluator is broken  B. Groundedness checks that each statement is supported by *some* context, and the generic policy doc in the context supports it  C. Relevance should have caught it  D. The content filter should have blocked it
+
+<details><summary>Answer</summary>
+
+**B.** Groundedness measures support, not correctness or which source should win. Catch it with a **deterministic check** in the test set (a `must_not` string, or an expected answer with a similarity/F1 evaluator), and fix it in the instructions.
+</details>
+
+# 2026-10-16: fixing evaluation findings, CI gate
+
+**57.** A GitHub Actions workflow must call your Foundry project. Company policy forbids storing secrets or keys. What do you set up?
+
+A. A service principal client secret in GitHub Secrets  B. An Entra app with a **federated credential** trusting the repo's GitHub OIDC tokens, used by `azure/login` with `id-token: write`  C. A system-assigned managed identity on the GitHub runner  D. The Foundry API key with `disableLocalAuth: false`
+
+<details><summary>Answer</summary>
+
+**B.** Workload identity federation: GitHub signs a short-lived token per run, Entra exchanges it because the federated credential's subject (e.g. `repo:org/repo:pull_request`) matches. Nothing to store or rotate. C is wrong because GitHub-hosted runners aren't Azure resources, so they have no managed identity.
+</details>
+
+**58.** After an evaluation run, which two kinds of test does a good test set contain, so that tightening the system message's scope doesn't silently break the assistant?
+
+<details><summary>Answer</summary>
+
+Questions it **must refuse** (off-topic, other customers' data, jailbreaks) and in-scope questions it **must answer**. A scope line that's too narrow turns valid questions (here: "How long do you keep my chat history?") into refusals, and only the second kind catches it.
+</details>
+
+**59.** Which role does a CI pipeline need to *run* an existing Foundry agent and an evaluator's judge model, following least privilege?
+
+A. Owner on the resource group  B. Contributor on the Foundry resource  C. **Azure AI User** (Foundry User) on the Foundry resource  D. Cognitive Services Contributor
+
+<details><summary>Answer</summary>
+
+**C.** It grants the data actions to run agents and call deployments. Contributor and Owner are control-plane roles that can change or delete resources, which a quality gate never needs.
+</details>
+
 ---
 
-**Score:** ___ / 48. Write the weak spots in [progress.md](progress.md) § Study log.
+**Score:** ___ / 59. Write the weak spots in [progress.md](progress.md) § Study log.

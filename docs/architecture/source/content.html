@@ -111,11 +111,11 @@ td:first-child { font-weight: 600; white-space: nowrap; }
 <div class="page-break"></div>
 <h2>1. One question, start to finish</h2>
 <ol class="steps">
-  <li><div><b>The claimant asks.</b> They sign in with Entra External ID, so the app knows who they are and which claims are theirs. The chat page sends the question to your ASP.NET Core app with the sign-in token.</div></li>
-  <li><div><b>The app runs the agent.</b> The app adds the question to the claimant's <b>conversation thread</b> in Foundry Agent Service and starts a <b>run</b>. The thread keeps the conversation history, so you don't resend it on every turn. The agent has a role, instructions and three tools.</div></li>
-  <li><div><b>General question: the agent searches.</b> For "Which documents do I need for water damage?" the model picks the knowledge-search tool. Azure AI Search runs a hybrid query (keyword + vector) over the company's documents, and the model answers only from the passages it gets back, with the source document named.</div></li>
-  <li><div><b>Claim question: the agent asks your app.</b> For "Where is my claim?" the model picks <code>get_claim_status</code>. A function tool doesn't run inside Foundry: the run pauses and hands the call to your app. Your app takes the claim id from the signed-in session, never from the model, calls the Claims API and returns the result to the run. Section 2 shows this loop in detail.</div></li>
-  <li><div><b>The model writes the answer.</b> <code>gpt-5-mini</code> writes the reply from the search passages or the claim data. Guardrails screen both the question and the answer: content filters for harmful content, Prompt Shields for prompt-injection attempts.</div></li>
+  <li><div><b>The claimant asks.</b> They sign in (a test sign-in with a cookie today; Entra External ID in production), so the app knows who they are and which claims are theirs. The chat page sends the question to your ASP.NET Core app.</div></li>
+  <li><div><b>The app runs the agent.</b> The app sends the question to the agent on the claimant's <b>conversation</b> (Responses API). Foundry stores the conversation, so the app keeps only its id. The agent has instructions and four tools.</div></li>
+  <li><div><b>The model picks the tools.</b> <code>gpt-5-mini</code> reads the question, the instructions and the tool descriptions, and decides which tools to call: none, one or several (an off-topic question is declined without any tool).</div></li>
+  <li><div><b>The tools run.</b> <span style="color:var(--docs)">Search:</span> Foundry runs a hybrid query (keyword + vector + semantic ranker) in Azure AI Search. <span style="color:var(--claim)">Function:</span> a function tool doesn't run inside Foundry; the call comes back to your app, which takes the claimant id from the sign-in, never from the model, calls the Claims API and sends the result back. A claim question usually uses both: <code>get_claim_status</code> for the claim, then search for what to do next. Section 2 shows the function loop.</div></li>
+  <li><div><b>The model writes the answer</b> from the tool results only. The content filter screens both the question and the answer: harmful content, jailbreaks (Prompt Shields) and protected material.</div></li>
   <li><div><b>The claimant gets the answer</b> with its sources. Every step is traced to Application Insights: which tool ran, how many tokens, how long it took, and whether a guardrail fired.</div></li>
 </ol>
 <p style="margin-top:5mm" class="lede"><b>The idea to remember:</b> the model decides <i>what</i> to do (search, look up a claim, ask for a callback); your code decides <i>whether it's allowed</i> and with which data. That split is what AI-103 means by "tool-access controls" and "oversight".</p>
@@ -125,14 +125,15 @@ td:first-child { font-weight: 600; white-space: nowrap; }
 <h2>2. The function-calling loop, and why the claim id never comes from the model</h2>
 <p>This is the part of the project the exam asks most about, and the part a client will ask you to explain. The model never calls your Claims API itself. It asks your app to.</p>
 <figure><div class="fig short">{{svg:function-call}}</div>
-<figcaption>Amber steps are where security is decided. The tool's schema has no claim-id parameter at all, so a prompt like "show me claim CLM-2001" has nothing to inject into: your app only ever reads the claim bound to the session.</figcaption></figure>
-<h3>The three tools</h3>
+<figcaption>Amber steps are where security is decided. The tool's schema has no claim-id parameter at all, so a prompt like "show me claim CLM-2001" has nothing to inject into: your app only ever reads the claims of the signed-in claimant.</figcaption></figure>
+<h3>The four tools</h3>
 <table>
   <thead><tr><th>Tool</th><th>Type</th><th>Runs where</th><th>Guard</th></tr></thead>
   <tbody>
     <tr><td><code>knowledge_search</code></td><td>Azure AI Search tool (built in)</td><td>Inside Foundry</td><td>Read-only index of public documents; answers must cite a source.</td></tr>
-    <tr><td><code>get_claim_status</code></td><td>Function tool, no parameters</td><td>Your app</td><td>Claim id from the session; Claims API returns only approved fields.</td></tr>
-    <tr><td><code>request_callback</code></td><td>Function tool: <code>reason</code>, <code>preferredTime</code></td><td>Your app, after approval</td><td>The app queues the request; it runs only after a claims handler approves it on the handler page. This is the exam's "approval flow".</td></tr>
+    <tr><td><code>get_claim_status</code></td><td>Function tool, no parameters</td><td>Your app</td><td>Claimant id from the sign-in; returns the signed-in name and only approved fields.</td></tr>
+    <tr><td><code>request_callback</code></td><td>Function tool: <code>reason</code>, <code>preferred_time</code></td><td>Your app, after approval</td><td>The app queues the request; it runs only after a claims handler approves it on the handler page. This is the exam's "approval flow".</td></tr>
+    <tr><td><code>get_callback_status</code></td><td>Function tool, no parameters</td><td>Your app</td><td>Reads the queue as it is now, so a handler's decision reaches the agent.</td></tr>
   </tbody>
 </table>
 
@@ -165,7 +166,7 @@ td:first-child { font-weight: 600; white-space: nowrap; }
   <tbody>
     <tr><td>Foundry resource + project</td><td>Holds the model deployments, the agent, guardrails, evaluations and connections to AI Search and Storage.</td><td><span class="tag">Plan</span>Choose Foundry services; set up AI solutions; configure model and agent deployments</td></tr>
     <tr><td>Model deployments</td><td><code>gpt-5-mini</code> for chat and images (multimodal); <code>text-embedding-3-small</code> for vectors. Standard (pay-per-token) deployments.</td><td><span class="tag">Plan</span>Choose a model per task; deployment options; quotas and rate limits</td></tr>
-    <tr><td>Foundry agent</td><td>Role, instructions, conversation thread, three tools.</td><td><span class="tag">GenAI</span>Agent roles, tool schemas, conversation tracking; retrieval + function calling + memory; approval controls</td></tr>
+    <tr><td>Foundry agent</td><td>Instructions, conversation, four tools.</td><td><span class="tag">GenAI</span>Agent roles, tool schemas, conversation tracking; retrieval + function calling + memory; approval controls</td></tr>
     <tr><td>Azure AI Search</td><td>Knowledge index, filled by an indexer that chunks and embeds documents from Blob Storage (integrated vectorization). Hybrid queries.</td><td><span class="tag">Extract</span>Ingest and index content; hybrid and vector search; enrichment skills; connect retrieval to agent tools</td></tr>
     <tr><td>Content Understanding</td><td>An analyzer turns an uploaded claim form (scanned PDF) into fields (policy number, incident date, damage type) and markdown the agent can read.</td><td><span class="tag">Extract</span>OCR + layout + field extraction; analyzers for structured or markdown output</td></tr>
     <tr><td>Damage photo input</td><td>The photo goes to the model as image input: "describe the visible damage" and questions answered from the photo.</td><td><span class="tag">Vision</span>Multimodal understanding; captions; question answering grounded in visual evidence</td></tr>
@@ -188,10 +189,37 @@ td:first-child { font-weight: 600; white-space: nowrap; }
   <div class="rule"><b>The model is untrusted input</b><p>Tool arguments from the model are validated like user input. Anything that identifies a claim comes from the session.</p></div>
   <div class="rule"><b>Documents are untrusted too</b><p>Uploaded forms and photos can contain hidden instructions. Prompt Shields screens them, and the agent's instructions say document text is data, not commands.</p></div>
   <div class="rule"><b>A person approves actions</b><p>Reading is automatic; doing something (booking a callback) waits for a handler's approval.</p></div>
-  <div class="rule"><b>Left out on purpose</b><p>Private endpoints and a VNet. They cost money and add setup time for a demo; you study them for the exam instead (section 7).</p></div>
+  <div class="rule"><b>Left out on purpose</b><p>Private endpoints and a VNet. They cost money and add setup time for a demo; you study them for the exam instead (section 8).</p></div>
 </div>
 
-<h2 style="margin-top:8mm">6. Evaluation: how you know it works</h2>
+<!-- 6. IDENTITY -->
+<div class="page-break"></div>
+<h2>6. Who signs in to what: Entra ID and RBAC</h2>
+<p>Every call to Azure passes two gates. <b>Authentication</b>: the caller proves who it is to Microsoft Entra ID and gets a short-lived token. <b>Authorization</b>: the resource reads the token and checks which RBAC role that identity holds on it. Keys are switched off everywhere (<code>disableLocalAuth</code> on Foundry and AI Search, <code>allowSharedKeyAccess: false</code> on Storage), so a token is the only way in.</p>
+<div class="legend">
+  <span><i class="lt"></i>authentication: prove who you are, get a token</span>
+  <span><i class="ls"></i>authorization: the role you hold on that resource</span>
+</div>
+<figure><div class="fig tall">{{svg:identity}}</div>
+<figcaption>The roles come from <code>infra/main.bicep</code>, so <code>up.ps1</code> grants them again after <code>down.ps1</code> deletes the resource group. The Entra identities themselves (your account, the GitHub app, the agent blueprint) live in the tenant and survive <code>down.ps1</code>.</figcaption></figure>
+
+<div class="page-break"></div>
+<h3>Four kinds of identity</h3>
+<table>
+  <thead><tr><th>Identity</th><th>How it proves who it is</th><th>Secret to store?</th><th>Used here by</th></tr></thead>
+  <tbody>
+    <tr><td>User account</td><td>Password + MFA in a browser (<code>az login</code>)</td><td>No, a person signs in</td><td>You, running scripts and the app locally</td></tr>
+    <tr><td>Managed identity</td><td>Azure hands the resource a token; nothing to configure</td><td>No</td><td>The Foundry project (agent's search tool) and AI Search (indexer, vectorizer); the app once it runs in Azure</td></tr>
+    <tr><td>App registration + federated credential</td><td>A token signed by an outside issuer (GitHub OIDC) whose subject matches, e.g. <code>repo:Ghinduta/foundry-claims-assistant:pull_request</code></td><td>No</td><td>GitHub Actions, as <code>claims-assistant-ci</code></td></tr>
+    <tr><td>App registration + client secret</td><td>A password stored by the caller</td><td>Yes, and it must be rotated</td><td>Nothing: this is what the other three avoid</td></tr>
+  </tbody>
+</table>
+<h3>How the app's code gets its token</h3>
+<p><code>DefaultAzureCredential</code> tries sign-in methods in order and uses the first that works: environment variables, workload identity, managed identity, then developer tools such as the Azure CLI. On your laptop it finds your <code>az login</code>; in Azure it finds the app's managed identity. The same code runs in both places, and neither needs a key in config.</p>
+<p class="lede"><b>The idea to remember:</b> Entra answers <i>who</i>, RBAC answers <i>what</i>. A token alone opens nothing: GitHub can sign in as <code>claims-assistant-ci</code>, but it can only run the agent and read endpoints, because those are its only two roles.</p>
+
+<div class="page-break"></div>
+<h2>7. Evaluation: how you know it works</h2>
 <p>About 40 test questions in a JSONL file, scored by a Python script with the <code>azure-ai-evaluation</code> package and run in CI. Writing the evaluation in Python is deliberate: the exam's code is Python.</p>
 <table>
   <thead><tr><th>Group</th><th>Count</th><th>Passes when</th></tr></thead>
@@ -206,7 +234,7 @@ td:first-child { font-weight: 600; white-space: nowrap; }
 
 <!-- 6. MILESTONES -->
 <div class="page-break"></div>
-<h2>7. Build order</h2>
+<h2>8. Build order</h2>
 <p>Each milestone ends with something that runs. The weeks match <code>PLAN.md</code>.</p>
 <table>
   <thead><tr><th>Milestone</th><th>Week</th><th>Done when</th></tr></thead>

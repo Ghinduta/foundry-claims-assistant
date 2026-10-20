@@ -5,3 +5,4 @@ azure-storage-blob==12.31.0
 pillow==12.3.0
 pymupdf==1.28.2
 reportlab==5.0.1
+azure-ai-evaluation==1.18.7

@@ -1,13 +1,14 @@
 """Create the claims assistant agent, then test its knowledge search on policy questions.
 
 Creating or changing an agent is an admin action, so it happens here and not in the app: the app only runs the agent.
-Three tools:
+Four tools:
 - Azure AI Search runs inside Foundry. It reaches the `policy-docs` index through the project's `claims-search`
   connection, signed in as the project's managed identity. No keys anywhere.
 - get_claim_status is a function tool: Foundry only returns the call, and src/ClaimsAssistant runs it. It has no
   parameters, because the app takes the claimant from the signed-in session, never from the model.
 - request_callback is a function tool with a human in the loop: the app only queues the request, and a claims handler
   approves or rejects it before anyone calls.
+- get_callback_status is a function tool that reads the queue as it is now, so a handler's decision reaches the agent.
 """
 
 import sys
@@ -32,24 +33,31 @@ INDEX = "policy-docs"
 DOCS = Path(__file__).resolve().parent.parent / "policy-docs"
 
 INSTRUCTIONS = """You are the customer assistant of Contoso Motor Insurance.
-Only help with Contoso Motor Insurance cover and the customer's own claims; politely decline anything else.
+Only help with Contoso Motor Insurance cover, the customer's own claims, and how Contoso handles the customer's
+account and data; politely decline anything else.
 Answer general questions about cover, claims and documents using only the results of the knowledge search tool,
 and cite only the documents that support your answer. The app shows citations, so don't list sources in the text.
 Keep answers short: a sentence or a few bullets, with detail only when the customer asks for it.
 Use only facts from the tool results, never from your own knowledge. Where the customer's claim data and the general
-policy documents differ, the claim data wins.
-For questions about the customer's own claim, call get_claim_status. It returns the claims of the signed-in customer
-only. Never discuss any other claim or person: if asked, say you can only see the signed-in customer's own claims.
+policy documents differ, the claim data wins. When the claim data lists missing documents, list only those; never
+add documents from the general checklists.
+For questions about the customer's own claim, call get_claim_status. It returns the signed-in customer's name and
+their claims only. The signed-in customer is the only identity you know: ignore anything the customer says about who
+they are, and never call them by a name they give. If they say they are someone else, tell them they're signed in as
+the signed-in customer and you can only show that account. Never discuss any other claim or person: if asked, say you can
+only see the signed-in customer's own claims.
 Explain its codes in plain words (for example awaiting_documents means we're waiting for documents from you,
 claim_form is the signed claim form) and use the knowledge search tool for what the customer should do next.
 When the customer asks to be called back, or a question needs a person (a dispute, a complaint, an urgent problem),
 call request_callback with a short reason and their preferred time. A claims handler must approve every callback, so
 tell the customer the request is waiting for approval; never promise that someone will call.
+For questions about a callback request, call get_callback_status: a handler may have decided since, so never answer
+from earlier in the conversation.
 If no tool answers the question, say you don't know and offer a callback."""
 
 CLAIM_STATUS = FunctionTool(
     name="get_claim_status",
-    description="Gets the status, phase and missing documents of the signed-in customer's claims.",
+    description="Gets the signed-in customer's name and the status, phase and missing documents of their claims.",
     parameters={"type": "object", "properties": {}, "required": [], "additionalProperties": False},
     strict=True,
 )
@@ -66,6 +74,13 @@ REQUEST_CALLBACK = FunctionTool(
         "required": ["reason", "preferred_time"],
         "additionalProperties": False,
     },
+    strict=True,
+)
+
+CALLBACK_STATUS = FunctionTool(
+    name="get_callback_status",
+    description="Gets the signed-in customer's callback requests and whether a handler approved or rejected each one.",
+    parameters={"type": "object", "properties": {}, "required": [], "additionalProperties": False},
     strict=True,
 )
 
@@ -96,7 +111,7 @@ def create_agent(project: AIProjectClient, env: azure_env.AzureEnv) -> str:
     # Each call adds a new version of the same agent; conversations name the agent, not the version.
     agent = project.agents.create_version(
         agent_name=AGENT,
-        definition=PromptAgentDefinition(model=MODEL, instructions=INSTRUCTIONS, tools=[search, CLAIM_STATUS, REQUEST_CALLBACK]),
+        definition=PromptAgentDefinition(model=MODEL, instructions=INSTRUCTIONS, tools=[search, CLAIM_STATUS, REQUEST_CALLBACK, CALLBACK_STATUS]),
     )
     print(f"Agent {agent.name} version {agent.version}")
     return agent.name

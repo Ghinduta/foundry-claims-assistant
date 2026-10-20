@@ -24,4 +24,5 @@ Where we are, how to run things, and the decisions so far: [progress.md](progres
 - Python scripts in `data/scripts/`, run with the repo's `.venv`. .NET solution `ClaimsAssistant.slnx` (`src/`,
   `tests/`). How to run each is in progress.md.
 - Keyless only: managed identity / `DefaultAzureCredential` and RBAC, never API keys.
-- Not a git repository yet.
+- Public repo: https://github.com/Ghinduta/foundry-claims-assistant. `progress.md` and `data/raw/` stay local
+  (git-ignored); Foundry tenant and endpoint are in .NET user secrets, not `appsettings.json`.

@@ -1,0 +1,115 @@
+<svg viewBox="0 0 1400 620" role="img" aria-label="Who signs in to what. The customer signs in to the app with a test sign-in cookie, not Entra. Every call to Azure proves its identity to Microsoft Entra ID, gets a token, and the resource then checks the RBAC role that identity holds. Callers: you with az login, the app with DefaultAzureCredential, the Foundry project's managed identity, the AI Search managed identity, and GitHub Actions through an OIDC federated credential.">
+        <defs>
+          <marker id="ia" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mka"/></marker>
+          <marker id="im" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mk"/></marker>
+        </defs>
+
+        <!-- The app's own sign-in -->
+        <text class="band" x="20" y="22">THE APP'S OWN SIGN-IN · NOT ENTRA ID TODAY</text>
+        <rect class="box" x="20" y="36" width="230" height="56" rx="4"/>
+        <text class="t" x="135" y="59" text-anchor="middle">Customer · browser</text>
+        <text class="s" x="135" y="78" text-anchor="middle">Maria, James… (test users)</text>
+        <text class="fl" x="403" y="57" text-anchor="middle">test sign-in → cookie</text>
+        <path class="flow" d="M250,64 H557" marker-end="url(#ia)"/>
+        <text class="al" x="403" y="82" text-anchor="middle">in production: Entra External ID</text>
+        <rect class="hub" x="560" y="36" width="260" height="56" rx="4"/>
+        <text class="t" x="690" y="59" text-anchor="middle">Claims assistant app</text>
+        <text class="s" x="690" y="78" text-anchor="middle">cookie claims.customer · CLAIMANT_ID</text>
+        <text class="fl" x="908" y="57" text-anchor="middle">claimant id from cookie</text>
+        <path class="aux dash" d="M820,64 H997" marker-end="url(#im)"/>
+        <text class="al" x="908" y="82" text-anchor="middle">localhost, no token</text>
+        <rect class="ext" x="1000" y="36" width="230" height="56" rx="4"/>
+        <text class="t" x="1115" y="59" text-anchor="middle">Claims API (mock)</text>
+        <text class="s" x="1115" y="78" text-anchor="middle">stands in for the insurer</text>
+
+        <!-- Azure: Entra token, then RBAC -->
+        <text class="band" x="20" y="126">EVERY CALL TO AZURE · 1 ENTRA ID: WHO ARE YOU?  2 RBAC ROLE ON THE RESOURCE: WHAT MAY YOU DO?</text>
+        <text class="band" x="20" y="152">CALLER · ITS IDENTITY</text>
+        <text class="band" x="403" y="152" text-anchor="middle">HOW IT PROVES WHO IT IS</text>
+        <text class="band" x="760" y="152">RESOURCE · ROLE (RBAC)</text>
+
+        <rect class="hub" x="555" y="165" width="150" height="436" rx="4"/>
+        <text class="t" x="630" y="360" text-anchor="middle">Microsoft</text>
+        <text class="t" x="630" y="378" text-anchor="middle">Entra ID</text>
+        <text class="s" x="630" y="402" text-anchor="middle">checks the proof,</text>
+        <text class="s" x="630" y="418" text-anchor="middle">issues a token</text>
+        <text class="s" x="630" y="434" text-anchor="middle">valid ~1 hour</text>
+
+        <!-- Row: you -->
+        <rect class="box" x="20" y="165" width="230" height="56" rx="4"/>
+        <text class="t" x="135" y="188" text-anchor="middle">You (developer)</text>
+        <text class="s" x="135" y="207" text-anchor="middle">user account</text>
+        <text class="fl" x="403" y="186" text-anchor="middle">az login</text>
+        <path class="flow" d="M250,193 H552" marker-end="url(#ia)"/>
+        <text class="al" x="403" y="210" text-anchor="middle">password + MFA · runs the scripts</text>
+        <text class="fl" x="731" y="186" text-anchor="middle">token</text>
+        <path class="flow" d="M705,193 H757" marker-end="url(#ia)"/>
+        <rect class="chip" x="760" y="169" width="200" height="48" rx="3"/>
+        <text class="c" x="772" y="188">Foundry</text><text class="fs" x="772" y="206">Foundry User</text>
+        <rect class="chip" x="970" y="169" width="200" height="48" rx="3"/>
+        <text class="c" x="982" y="188">AI Search</text><text class="fs" x="982" y="206">Index Data + Service Contrib.</text>
+        <rect class="chip" x="1180" y="169" width="200" height="48" rx="3"/>
+        <text class="c" x="1192" y="188">Blob Storage</text><text class="fs" x="1192" y="206">Blob Data Contributor</text>
+
+        <!-- Row: the app -->
+        <rect class="hub" x="20" y="241" width="230" height="56" rx="4"/>
+        <text class="t" x="135" y="264" text-anchor="middle">Claims assistant app</text>
+        <text class="s" x="135" y="283" text-anchor="middle">DefaultAzureCredential</text>
+        <text class="fl" x="403" y="262" text-anchor="middle">today: your az login</text>
+        <path class="flow" d="M250,269 H552" marker-end="url(#ia)"/>
+        <text class="al" x="403" y="286" text-anchor="middle">in Azure: its own managed identity</text>
+        <text class="fl" x="731" y="262" text-anchor="middle">token</text>
+        <path class="flow" d="M705,269 H757" marker-end="url(#ia)"/>
+        <rect class="chip" x="760" y="245" width="200" height="48" rx="3"/>
+        <text class="c" x="772" y="264">Foundry</text><text class="fs" x="772" y="282">Foundry User · run agent</text>
+
+        <!-- Row: Foundry project -->
+        <rect class="box" x="20" y="317" width="230" height="56" rx="4"/>
+        <text class="t" x="135" y="340" text-anchor="middle">Foundry project</text>
+        <text class="s" x="135" y="359" text-anchor="middle">system-assigned managed identity</text>
+        <text class="fl" x="403" y="338" text-anchor="middle">managed identity · no secret</text>
+        <path class="flow" d="M250,345 H552" marker-end="url(#ia)"/>
+        <text class="al" x="403" y="362" text-anchor="middle">the agent's search tool (claims-search)</text>
+        <text class="fl" x="731" y="338" text-anchor="middle">token</text>
+        <path class="flow" d="M705,345 H757" marker-end="url(#ia)"/>
+        <rect class="chip" x="760" y="321" width="200" height="48" rx="3"/>
+        <text class="c" x="772" y="340">AI Search</text><text class="fs" x="772" y="358">Search Index Data Reader</text>
+        <rect class="chip" x="970" y="321" width="200" height="48" rx="3"/>
+        <text class="c" x="982" y="340">AI Search</text><text class="fs" x="982" y="358">Search Service Contributor</text>
+
+        <!-- Row: AI Search -->
+        <rect class="box" x="20" y="393" width="230" height="56" rx="4"/>
+        <text class="t" x="135" y="416" text-anchor="middle">AI Search service</text>
+        <text class="s" x="135" y="435" text-anchor="middle">system-assigned managed identity</text>
+        <text class="fl" x="403" y="414" text-anchor="middle">managed identity · no secret</text>
+        <path class="flow" d="M250,421 H552" marker-end="url(#ia)"/>
+        <text class="al" x="403" y="438" text-anchor="middle">the indexer and the vectorizer</text>
+        <text class="fl" x="731" y="414" text-anchor="middle">token</text>
+        <path class="flow" d="M705,421 H757" marker-end="url(#ia)"/>
+        <rect class="chip" x="760" y="397" width="200" height="48" rx="3"/>
+        <text class="c" x="772" y="416">Blob Storage</text><text class="fs" x="772" y="434">Storage Blob Data Reader</text>
+        <rect class="chip" x="970" y="397" width="200" height="48" rx="3"/>
+        <text class="c" x="982" y="416">Foundry · embeddings</text><text class="fs" x="982" y="434">Cog. Services OpenAI User</text>
+
+        <!-- Row: GitHub Actions -->
+        <rect class="box" x="20" y="469" width="230" height="56" rx="4"/>
+        <text class="t" x="135" y="492" text-anchor="middle">GitHub Actions</text>
+        <text class="s" x="135" y="511" text-anchor="middle">app claims-assistant-ci</text>
+        <text class="fl" x="403" y="490" text-anchor="middle">OIDC token signed by GitHub</text>
+        <path class="flow" d="M250,497 H552" marker-end="url(#ia)"/>
+        <text class="al" x="403" y="514" text-anchor="middle">matched by a federated credential</text>
+        <text class="fl" x="731" y="490" text-anchor="middle">token</text>
+        <path class="flow" d="M705,497 H757" marker-end="url(#ia)"/>
+        <rect class="chip" x="760" y="473" width="200" height="48" rx="3"/>
+        <text class="c" x="772" y="492">Foundry</text><text class="fs" x="772" y="510">Foundry User · run agent</text>
+        <rect class="chip" x="970" y="473" width="200" height="48" rx="3"/>
+        <text class="c" x="982" y="492">Resource group</text><text class="fs" x="982" y="510">Reader · endpoints</text>
+
+        <!-- Row: agent identity -->
+        <rect class="ext" x="20" y="545" width="230" height="56" rx="4"/>
+        <text class="t" x="135" y="568" text-anchor="middle">Agent identity</text>
+        <text class="s" x="135" y="587" text-anchor="middle">blueprint made by Foundry</text>
+        <path class="aux dash" d="M250,573 H552" marker-end="url(#im)"/>
+        <text class="al" x="403" y="566" text-anchor="middle">Entra Agent ID (preview)</text>
+        <text class="al" x="403" y="590" text-anchor="middle">registered, not used by our tools yet</text>
+      </svg>
